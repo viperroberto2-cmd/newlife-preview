@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NewLife Wound Care — Wound care that comes to your door</title>
+<meta name="description" content="For wounds that have stopped getting better. We visit you at home, care for the wound, and come back to check on it on a set schedule.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#FBF6EF">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="img/favicon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/NeutralSans-Medium.ttf" as="font" type="font/ttf" crossorigin>
+<script>
+/* Idioma antes de pintar. Movimiento solo si el usuario no pidió reducirlo.
+   Si los scripts no corren en 3 s, se quita "anim" y todo queda visible. */
+(function(){
+  var d=document.documentElement,l="en";
+  /* 1º la elección guardada; si no hay, el idioma del teléfono o computadora (es-* abre en español) */
+  try{var g=localStorage.getItem("nl-lang");l=g?(g==="es"?"es":"en"):(/^es\b/i.test(navigator.language||"")?"es":"en")}catch(e){}
+  d.setAttribute("data-lang",l);d.lang=l;
+  var rm=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!rm){d.classList.add("anim");setTimeout(function(){if(!window.__nlReady)d.classList.remove("anim")},3000)}
+})();
+</script>
+<style>
+@font-face{font-family:"Neutral Sans";src:url("fonts/NeutralSans-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Neutral Sans";src:url("fonts/NeutralSans-Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Neutral Sans";src:url("fonts/NeutralSans-Bold.ttf") format("truetype");font-weight:700;font-style:normal;font-display:swap}
+
+:root{
+  /* Paleta NewLife sobre la estructura de terrot:
+     terrot #eee -> cream, #1a1a1a -> ink, naranja #ff5d0c -> coral, #af3a00 -> coral oscuro */
+  --bg:#FBF6EF;--card:#FFFFFF;--ink:#0E1F33;--ocean:#12355B;
+  --coral:#F0855A;--coral-deep:#B4512A;--aqua:#7FCFC3;--grey:#8A8F96;--line:#E3DACB;
+  --pending:#FFE066;
+  --display:"Neutral Sans",Impact,sans-serif;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --wrap:1280px;--side:5vw;
+}
+*,*::before,*::after{box-sizing:border-box}
+html[data-lang="en"] [lang="es"],html[data-lang="es"] [lang="en"]{display:none!important}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+/* overflow-x:clip en html y body: nada (zoom de imagen, marquesinas) puede ensanchar la página en móvil */
+html{overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-x:clip}
+img,video{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit}
+h1,h2,h3,p{margin:0}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-999px;top:8px;z-index:200;background:var(--ink);color:#fff;padding:10px 16px;border-radius:8px}
+.skip:focus{left:12px}
+:focus-visible{outline:3px solid var(--ocean);outline-offset:3px;border-radius:6px}
+.pending{display:inline-block;background:var(--pending);color:var(--ink);font:600 .78em/1 var(--sans);letter-spacing:.08em;padding:.45em .8em;border-radius:999px;vertical-align:middle;text-transform:uppercase}
+
+/* Antes de animar, los objetivos quedan ocultos (como el visibility:hidden de terrot) */
+html.anim [data-a]{visibility:hidden}
+
+/* SplitText: máscaras de línea / letra */
+.split-line-mask,.split-char-mask{overflow:clip}
+
+/* ===== utilidades terrot ===== */
+.paddinglow{padding:50px 0}
+/* Valores medidos en terrot el 15-oct (getComputedStyle, 1440x900 y 390x844): ver auditoria/medidas.json */
+.titlelabel{font:600 16px/1.6 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.titlelabel.bottomrem{padding-bottom:4rem}
+.headersection{width:100%;max-width:90vw;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center}
+.headersection.left{align-items:flex-start;text-align:left;max-width:var(--wrap);width:90vw}
+.divsection{width:40px;height:2px;background:var(--coral-deep);margin:24px 0}
+.titlesectionmedium{font:500 28px/1.2 var(--sans);letter-spacing:-1px;color:var(--ink)}
+/* terrot capitaliza cada palabra; aquí NO: regla de escritura de Roberto (títulos en mayúscula de oración) */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;min-width:220px;padding:20px 28px;border-radius:20px;border:0;background:var(--ink);color:#fff;font:500 14px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all .2s}
+.btn:hover{background:var(--coral-deep);color:#fff}
+.btn.light{background:#fff;color:var(--ink);min-width:0;padding:14px 26px;border-radius:999px;font-size:14px;letter-spacing:.04em;text-transform:none}
+.btn.light:hover{background:var(--ink);color:#fff}
+
+/* ===== NAV ===== */
+/* como terrot: la barra se queda arriba y se va con el scroll (fija se encimaba sobre los títulos) */
+.nav{position:absolute;inset:0 0 auto 0;z-index:100;padding:16px var(--side);display:flex;align-items:center;justify-content:space-between;gap:16px;pointer-events:none}
+.nav>*{pointer-events:auto}
+.nav-logo{display:flex;align-items:center;min-height:44px}
+.nav-logo img{width:clamp(130px,11vw,170px);height:auto}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-call{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:110px;background:var(--coral);color:var(--ink);font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background .2s}
+.nav-call:hover{background:#F39A74}
+.nav-lang{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border:1.5px solid var(--ink);border-radius:110px;background:transparent;color:var(--ink);font:600 12px/1 var(--sans);letter-spacing:.12em;cursor:pointer}
+.nav-lang b{font-weight:600;opacity:.4}
+.nav-lang i{font-style:normal;opacity:.3}
+html[data-lang="en"] .nav-lang .nl-en,html[data-lang="es"] .nav-lang .nl-es{opacity:1;text-decoration:underline;text-underline-offset:3px}
+.nav-lang:hover{background:var(--ink);color:#fff}
+/* en terrot "menu" es solo texto (12px, .14em); el área de toque de 44px se conserva sin fondo */
+.menu-btn{min-height:44px;min-width:64px;padding:0 10px;border-radius:110px;border:0;background:transparent;color:var(--ink);font:600 12px/1.1 var(--sans);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1)}
+.menu-btn:hover{background:var(--ink);color:#fff}
+.menu-parent{position:fixed;inset:0;z-index:90;display:none;pointer-events:none;justify-content:flex-end;align-items:flex-start;padding:84px var(--side) 0}
+.menu-drop-down{opacity:0;background:var(--card);border-radius:16px;box-shadow:0 30px 60px rgba(14,31,51,.14);padding:28px 32px;min-width:min(420px,90vw);display:flex;flex-direction:column}
+.nav-link{display:block;font:500 clamp(30px,3vw,42px)/1.15 var(--display);letter-spacing:-.02em;color:var(--ink);text-decoration:none;padding:6px 0}
+.nav-link:hover{color:var(--coral-deep)}
+.socials-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.lang-btn{min-height:44px;padding:0 16px;border-radius:110px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);font:600 12px/1 var(--sans);letter-spacing:.14em;cursor:pointer}
+.lang-btn:hover{background:var(--ink);color:#fff}
+
+/* ===== HERO ===== */
+.hero{position:relative;z-index:1;min-height:100svh;overflow:hidden;display:flex;flex-direction:column}
+/* terrot: h1 arriba a 76 px, interlínea 0.8 (140/112), subtítulo a 24 px, cinta 12 px debajo */
+.herocentercontent{width:90%;max-width:1280px;margin:76px auto 0;display:flex;justify-content:center}
+.heromediumcontent{display:flex;flex-direction:column;align-items:center;gap:24px}
+.headinghero{font:500 clamp(54px,8.6vw,140px)/.8 var(--display);letter-spacing:-.02em;text-align:center;padding-top:.06em;
+  background-image:linear-gradient(180deg,#fff,var(--coral) 50%,var(--coral-deep));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--coral);
+  filter:drop-shadow(0 0 6px #ffffff38) drop-shadow(0 0 18px #ffffff1f)}
+.subtitle{font:500 18px/1.5 var(--sans);text-transform:uppercase;text-align:center;color:var(--ink);max-width:620px}
+/* flex:none: la cinta mide lo que la tarjeta (terrot: 640 / 430 en celular); estirada dejaba un hueco en celular */
+.heroimagecontainer{position:relative;flex:none;margin-top:12px;display:flex;align-items:center;background:var(--bg)}
+.project-content-wp{position:relative;width:100%;overflow:clip}
+.outer-curve-top,.outer-curve{position:absolute;left:0;z-index:2;width:100%;background:var(--bg);border-radius:100%}
+.outer-curve-top{top:0;height:8rem;transform:translate(0,-50%) scale(1.2)}
+.outer-curve{bottom:0;height:12rem;transform:translate(0,50%) scale(1.2)}
+/* sin gap entre listas: cada lista lleva su propio espacio a la derecha, así 4 listas = 4 periodos
+   exactos y el salto de -75% a -25% cae justo en el mismo cuadro (terrot salta ~20 px) */
+.project-content-wps{display:flex;width:max-content}
+.project-list{display:flex;gap:2.5rem;padding-right:2.5rem}
+.projectcardinfo{position:relative;flex:none;width:28.125rem;height:40rem;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.projectcardinfo img,.projectcardinfo video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.maskimageproject{position:absolute;inset:0;z-index:1;background:#0000004d}
+.floatinglabelnameproject{position:absolute;z-index:3;bottom:22%;left:6%;right:6%;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.projectname{font:500 36px/1 var(--display);color:#FBF6EF;text-transform:uppercase;text-shadow:0 1px 3px #00000080,0 4px 14px #00000059}
+.textcategory{font:400 13px/1.3 var(--sans);color:#ECE6DC;text-transform:uppercase;letter-spacing:.06em;text-shadow:0 1px 3px #00000080,0 4px 14px #00000059}
+
+/* cada frase en su propia línea: un <br> se perdía cuando SplitText volvía a partir el texto en celular */
+.subtitle .sub-l{display:block}
+.hero-lines{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px;font:500 15px/1.4 var(--sans);color:var(--ink)}
+.hero-lines li{display:flex;align-items:center;gap:8px}
+.hero-lines li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--coral-deep)}
+.hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.hero-cta .btn{min-width:200px;padding:16px 24px;border-radius:999px}
+.btn.hero-ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.hero-ghost:hover{background:var(--ink);color:#fff}
+
+/* lista gigante de terrot usada como enlace (puertas) y como lista (instituciones) */
+.biglink{text-decoration:none;color:inherit;justify-content:flex-start}
+.biglink .servicename{transition:color .25s}
+.biglink:hover .servicename,.biglink:focus-visible .servicename{color:var(--coral-deep)}
+.biglink .arr{display:inline-block;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+.biglink:hover .arr{transform:translateX(12px)}
+.facline{justify-content:flex-start;padding:28px 0}
+.facilities .servicename{font-size:clamp(34px,4.6vw,66px)}
+.facilities .fac-intro{margin-top:40px}
+
+/* ===== DOS PUERTAS ===== */
+.doors{width:90vw;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.door{display:flex;flex-direction:column;gap:10px;padding:32px;border-radius:12px;background:var(--card);text-decoration:none;color:var(--ink);transition:background .2s}
+.door:hover{background:#fff7f0}
+.door-k{font:600 13px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--coral-deep)}
+.door-t{font:500 clamp(24px,2.4vw,34px)/1.15 var(--display);letter-spacing:-.02em}
+.door-d{font:400 16px/1.6 var(--sans);opacity:.85}
+.door-go{margin-top:6px;font:600 14px/1 var(--sans)}
+
+/* ===== QUIÉN VA A IR ===== */
+.nurse-grid{width:90vw;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:24px;align-items:stretch}
+.nurse-photo{border-radius:12px;background:var(--card);min-height:380px;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;border:1.5px dashed #cfc7ba;font:500 15px/1.5 var(--sans);color:var(--grey)}
+.nurse-card{background:var(--card);border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:18px}
+.nurse-card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:12px 20px;font:400 16px/1.5 var(--sans)}
+.nurse-card dt{font:600 12px/1.6 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.nurse-card dd{margin:0}
+.nurse-note{font:400 15px/1.6 var(--sans);color:var(--ink);opacity:.85}
+.family-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:90vw;max-width:1280px;margin:24px auto 0}
+.family-list li{background:var(--card);border-radius:12px;padding:28px;font:400 16px/1.6 var(--sans)}
+.family-list b{display:block;font:600 18px/1.3 var(--sans);margin-bottom:8px}
+
+/* ===== ABOUT ===== */
+.about{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;overflow:hidden}
+.containerabout{width:90vw;max-width:1100px;display:flex;flex-direction:column;align-items:center}
+.h2-about{font:500 48px/1.3 var(--sans);letter-spacing:-1.92px;text-transform:uppercase;color:var(--ink);max-width:820px}
+.h2-about .textspan{color:var(--coral-deep)}
+.aboutdivider{width:60px;height:1px;background:var(--ink);opacity:.5;margin-top:48px}
+
+/* ===== FEATURED (situaciones) ===== */
+.featuredworks{position:relative;overflow:hidden}
+.hero-big-text{position:absolute;top:0;z-index:-1;width:100%;display:flex;justify-content:flex-end;align-items:center;gap:10rem;white-space:nowrap;pointer-events:none;overflow:hidden}
+.heromarquee{display:flex;gap:8rem;align-items:center;pointer-events:none}
+.displaymarquee{opacity:.46;font:500 360px/324px var(--sans);letter-spacing:-.3rem;text-transform:uppercase;color:#fff;-webkit-text-stroke:2px var(--coral-deep)}
+.containerworks{width:90vw;max-width:1280px;margin:0 auto}
+.worksgridfeatured{display:grid;grid-template-columns:1fr 1fr;gap:1rem;list-style:none;margin:0;padding:0}
+.projectlink{position:relative;display:block;width:100%;padding-bottom:100%;border:2px solid #ffe5e55e;border-radius:12px;overflow:hidden;text-decoration:none;transition:color .2s}
+.projectthumbnail{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.projectlink .maskimageproject{background:linear-gradient(180deg,#0e1f3399 0%,#0e1f3326 45%,#0e1f3380 100%)}
+.projectcontent{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:space-between;padding:1rem}
+.projecttitlecontainer{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.enterprisename{font:500 clamp(22px,2.3vw,36px)/1.1 var(--display);letter-spacing:-1.5px;color:#FBF6EF;max-width:16ch;padding:6px 8px;text-shadow:0 2px 14px #00000059}
+.arrowprojectview{flex:none;width:48px;height:48px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:#ECE6DC;color:var(--ink)}
+.arrowprojectview svg{width:22px;height:22px}
+.hoverdiv{position:absolute;inset:0;z-index:3;opacity:0;display:flex;align-items:center;justify-content:center;background:#00000094;border:1px solid #f5f5f529;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);pointer-events:none}
+.texthover{font:500 2.5vw/1.2 var(--sans);background-image:linear-gradient(90deg,#fff,#c9c3baf5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.projectcontentfooter{align-self:flex-start;padding:10px 15px;border:1px solid #ffe5e55e;border-radius:14px;background:#1d1c1c82;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);color:#fff;font:500 13px/1 var(--sans);letter-spacing:.1em}
+.viewallprojectscontainer{display:flex;align-items:center;justify-content:space-between;gap:32px;margin-top:48px}
+.paragraphworks{font:400 18px/1.6 var(--sans);max-width:620px;color:var(--ink)}
+
+/* ===== PASOS (servicios grandes de terrot) ===== */
+.servicecontainer{width:90vw;max-width:1280px;margin:0 auto}
+.serviceitem{display:flex;justify-content:center;align-items:center;padding:48px 0}
+.servicebody{display:flex;flex-direction:column;align-items:flex-start;gap:14px;max-width:1100px}
+.servicenamewrapper{display:flex;align-items:center;gap:24px}
+.servicedot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--coral-deep);box-shadow:0 0 8px #F0855A66}
+.servicename{font:500 clamp(40px,6.25vw,90px)/1.2 var(--display);color:var(--ink)}
+.servicename .n{color:var(--coral-deep)}
+.servicedesc{font:400 18px/1.6 var(--sans);color:var(--ink);opacity:.8;max-width:620px;padding-left:34px}
+
+/* ===== IMAGEN QUE SE ABRE ===== */
+/* el zoom 1.6 -> 1 queda dentro de su recuadro: suelto tapaba el paso 04 y ensanchaba la página en móvil */
+.animationsimages{position:relative;z-index:3;width:100%;aspect-ratio:16/9;overflow:clip}
+.imagecontainer2{position:relative;width:100%;height:100%;overflow:hidden;border-radius:5%}
+.imageparallax1{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;border-radius:5%}
+.maskvisual{position:absolute;inset:0;z-index:2;background:#00000059;border-radius:5% 5% 5px}
+.containerphrases{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:0 5vw}
+.textvideoparallax1{font:400 clamp(36px,6.25vw,90px)/1 var(--display);letter-spacing:-.02em;color:#fff;text-align:center}
+
+/* ===== CARRUSEL DE SERVICIOS (slider de testimonios) ===== */
+.testimonialsection{position:relative}
+.main-container{width:90vw;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:389px 1fr;gap:0;align-items:start}
+.cardstats{background:var(--card);border-radius:28px;padding:48px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.titlereview{font:500 13px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+.numberreview{font:600 48px/1 var(--sans);color:var(--coral-deep)}
+.numberreview .pending{font-size:16px}
+.numberreview.cov-list{font:600 30px/1.25 var(--sans);letter-spacing:-.01em}
+.main-container>*{min-width:0}
+.descriptionreview{font:400 14px/1.5 var(--sans);color:var(--ink)}
+.slider{position:relative;padding-left:24px}
+.slider-mask{overflow:hidden;border-radius:16px}
+.slider-track{display:flex;transition:transform .5s ease}
+.slider-track.no-tr{transition:none}
+.slide{flex:0 0 100%;min-width:0}
+.testimonialdiv{background:var(--card);border-radius:16px;min-height:420px;padding:44px 48px 36px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+.slide-kicker{font:600 13px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--coral-deep)}
+/* terrot: el texto del slide es Inter 500 26px/39px (15px en celular) */
+.textbig{font:500 26px/1.5 var(--sans);color:var(--ink)}
+.textbig.big{font-size:clamp(32px,3.6vw,52px);line-height:1.1;letter-spacing:-.02em}
+.bottomcontainer{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.person{display:flex;align-items:center;gap:14px}
+.bnwpic{width:56px;height:56px;border-radius:50%;object-fit:cover}
+.bnwpic.ph{background:var(--bg);display:flex;align-items:center;justify-content:center;font:500 18px var(--display);color:var(--coral-deep)}
+.textlarge{font:600 18px/1.3 var(--sans);color:var(--ink)}
+.textmedium{font:400 14px/1.3 var(--sans);color:var(--grey)}
+.slide-count{font:500 14px/1 var(--sans);letter-spacing:.12em;color:var(--grey)}
+.slider-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:48px;height:48px;border-radius:50%;border:0;background:var(--ink);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.slider-arrow:hover{background:var(--coral-deep)}
+.slider-arrow svg{width:20px;height:20px}
+.slider-arrow.prev{left:0}.slider-arrow.next{right:-24px}
+.slider-nav{display:flex;justify-content:center;gap:12px;margin-top:20px}
+.slider-dot{width:10px;height:10px;padding:0;border-radius:50%;border:0;background:#cfc7ba;cursor:pointer}
+.slider-dot[aria-current="true"]{background:var(--ink)}
+.slider-dot::after{content:"";display:block;width:44px;height:44px;margin:-17px}
+
+/* ===== DOS TARJETAS (precios de terrot) ===== */
+.containerpricingwrapper{width:90vw;max-width:1280px;margin:0 auto}
+/* terrot: dos tarjetas de igual alto, radio 12; el escalón lo hace solo la animación (y 50 / y 300) */
+.pricing-card-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch}
+.pricing-first-card,.pricing-second-card{border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:28px}
+.pricing-first-card{background:var(--card);box-shadow:0 1px 0 var(--line)}
+.pricing-second-card{background:linear-gradient(160deg,#FCE3D5 0%,var(--coral) 55%,var(--coral-deep) 100%);color:var(--ink)}
+.plantitle{font:600 24px/1.2 var(--sans)}
+.pricing-list-wrapper{display:flex;flex-direction:column;gap:12px;list-style:none;margin:0;padding:0}
+.pricing-list{display:flex;align-items:flex-start;gap:12px;font:400 16px/1.5 var(--sans)}
+.pricing-list::before{content:"";flex:none;width:6px;height:6px;margin-top:.62em;border-radius:50%;background:currentColor}
+.pricing-bottom-wrapper{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--line)}
+.pricing-second-card .pricing-bottom-wrapper{border-top-color:#0e1f3326}
+.pricing-second-card dl{margin:0;display:grid;gap:14px}
+.pricing-second-card dt{font:600 12px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.pricing-second-card dd{margin:0}
+.quicklinks{display:flex;flex-direction:column;gap:8px}
+.quicklinks a{display:flex;justify-content:space-between;align-items:center;min-height:48px;padding:0 16px;border-radius:12px;background:#ffffffb3;text-decoration:none;font:600 15px/1.3 var(--sans);transition:background .2s}
+.quicklinks a::after{content:"→"}
+.quicklinks a:hover{background:#fff}
+.coverage-note{font:400 15px/1.5 var(--sans);color:var(--ink)}
+
+/* ===== INSTITUCIONES ===== */
+.fac-intro{font:400 18px/1.6 var(--sans);color:var(--ink);max-width:720px;margin-bottom:32px}
+.fac-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.fac-card{background:var(--card);border-radius:8px;padding:2rem;display:flex;flex-direction:column;gap:28px;min-height:180px}
+.fac-n{font:500 36px/1 var(--display);color:var(--coral-deep)}
+.fac-t{font:600 18px/1.3 var(--sans);color:var(--ink)}
+.fac-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn.fac-call{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn.fac-call:hover{background:var(--ink);color:#fff}
+
+/* ===== FAQ ===== */
+.containersection{width:90vw;max-width:1280px;margin:0 auto}
+.faqcontainer{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.faq_wrap{display:grid;gap:16px}
+.faq{background:var(--card);border-radius:8px}
+.faq_top{width:100%;border:0;background:transparent;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:3rem 2rem;font:600 16px/1.6 var(--sans);color:var(--ink)}
+.faq_icon{flex:none;width:1.5rem;height:1.5rem;transition:none}
+.faq_bottom{overflow:clip;height:0;padding:0 2rem}
+.faq_bottom p{font:400 16px/1.7 var(--sans);color:var(--ink);padding-bottom:2rem}
+
+/* ===== CONTACTO ===== */
+.contactsection .formcard{width:90vw;max-width:1280px;margin:0 auto;background:var(--card);border-radius:16px;padding:clamp(24px,4vw,48px);display:grid;grid-template-columns:1fr 1fr;gap:18px 24px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font:600 14px/1.2 var(--sans)}
+.field input,.field select,.field textarea{min-height:48px;padding:12px 14px;border:1.5px solid #9C9388;border-radius:10px;background:var(--bg);color:var(--ink);font:400 16px var(--sans)}
+.field textarea{min-height:130px;resize:vertical}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{border-color:var(--ocean)}
+.consent{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start;font:400 15px/1.5 var(--sans)}
+.consent input{flex:none;width:22px;height:22px;margin-top:2px;accent-color:var(--ocean)}
+.formcard .btn{grid-column:1/-1;justify-self:start}
+
+/* ===== INTAKE POR PASOS ===== */
+.intake{width:90vw;max-width:880px;margin:0 auto;background:var(--card);border-radius:16px;padding:clamp(24px,4vw,48px)}
+.in-top{margin-bottom:28px}
+.in-count{font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--grey);margin-bottom:10px}
+.in-count b{font-weight:600;color:var(--ink)}
+.in-bar{height:4px;border-radius:4px;background:#efe8dd;overflow:hidden}
+.in-bar i{display:block;height:100%;width:0;background:var(--coral-deep);transition:width .4s ease}
+.step{border:0;margin:0;padding:0;min-width:0}
+.step+.step{margin-top:40px}                    /* sin JS se ven todos, separados */
+.intake.js .step{display:none;margin-top:0}
+.intake.js .step.on{display:block;animation:inFade .35s ease}
+@keyframes inFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.step legend{font:500 clamp(24px,2.6vw,34px)/1.2 var(--display);letter-spacing:-.02em;color:var(--ink);margin-bottom:22px;padding:0}
+.q{font:600 16px/1.4 var(--sans);margin:26px 0 12px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{position:relative;display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt>span{display:flex;align-items:center;min-height:58px;padding:14px 18px;border:1.5px solid #ddd4c6;border-radius:12px;background:var(--bg);font:500 16px/1.35 var(--sans);color:var(--ink);transition:border-color .15s,background .15s}
+.opt:hover>span{border-color:var(--ink)}
+.opt input:focus-visible+span{outline:3px solid var(--ocean);outline-offset:2px}
+.opt input:checked+span{border-color:var(--coral-deep);background:#fcebe1;box-shadow:inset 0 0 0 1px var(--coral-deep)}
+.opt input[type=checkbox]+span::before{content:"";flex:none;width:20px;height:20px;margin-right:12px;border:1.5px solid #9c9388;border-radius:5px;background:#fff}
+.opt input[type=checkbox]:checked+span::before{background:var(--coral-deep);border-color:var(--coral-deep);box-shadow:inset 0 0 0 3px #fff}
+.in-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.intake .field{margin-top:18px}
+.in-hint{margin-top:16px;font:400 15px/1.5 var(--sans);color:var(--grey)}
+.in-alert{margin-top:18px;padding:16px 18px;border-radius:12px;background:#fde6e1;border:1.5px solid #c8412b;font:500 15px/1.5 var(--sans);color:#7a1f10}
+.intake .consent{margin-top:24px}
+.in-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:32px}
+.in-back{min-height:48px;padding:0 6px;border:0;background:none;font:600 15px/1 var(--sans);color:var(--ink);cursor:pointer}
+.in-back[hidden]{display:block;visibility:hidden}
+.in-nav .btn[hidden]{display:none}           /* .btn es inline-flex y le ganaba al atributo hidden */
+.in-nav .btn{min-width:180px;padding:16px 28px;border-radius:999px;margin-left:auto}
+.intake:not(.js) .in-next,.intake:not(.js) .in-back{display:none}
+.in-err{margin-top:12px;font:600 14px/1.4 var(--sans);color:#b3261e}
+.in-done{text-align:center;padding:24px 0}
+.in-done h3{font:500 clamp(26px,3vw,38px)/1.2 var(--display);margin-bottom:12px}
+.in-done p{font:400 17px/1.6 var(--sans)}
+
+/* ===== CTA ===== */
+/* terrot: CTA de 945 px (591 en celular), radio 32 abajo, texto a 380 px del borde (241 en celular) */
+.sectioncalltoaction{position:relative;margin:0 auto;width:100%;min-height:clamp(591px,65.6vw,945px);border-radius:0 0 32px 32px;overflow:hidden;display:flex;align-items:flex-start;justify-content:center}
+.cta__img{position:absolute;inset:0}
+.cta__img video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cta__img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--bg) 0%,#f0855ad9 45%,#b4512af2 100%)}
+.cta__content-wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:1rem;padding:clamp(241px,26.4vw,380px) 5vw 0;text-align:center}
+.msgcta{font:500 clamp(36px,6.95vw,100px)/1.2 var(--display);letter-spacing:-.03em;color:var(--ink);max-width:16ch}
+.sectioncalltoaction .btn.light{font:500 18px/1.6 var(--sans);letter-spacing:-.48px;padding:10px 24px;border-radius:40px;min-height:48px}
+
+/* ===== FOOTER ===== */
+/* telón como terrot: el contenido (con fondo) va encima; el footer queda pegado abajo y la tarjeta del CTA,
+   con sombra, se va y lo destapa */
+main{position:relative;z-index:1;background:var(--bg)}
+.sectioncalltoaction{z-index:2;box-shadow:0 30px 60px rgba(14,31,51,.18)}
+.footer{position:sticky;bottom:0;z-index:0;overflow:hidden;padding-top:96px;background:var(--bg)}
+.footerwrapper{width:90vw;max-width:1280px;margin:0 auto}
+.footertop{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-top:32px;border-top:1px solid var(--line)}
+.footerleft{display:flex;flex-direction:column;gap:32px}
+.footerlogo img{width:200px;height:auto}
+.footernav{display:flex;flex-direction:column;gap:2px}
+.footerlinks,.footersociallinks{display:inline-flex;align-items:center;min-height:36px;font:500 14px/1.6 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+.footerlinks:hover,.footersociallinks:hover{color:var(--coral-deep)}
+.footerright{display:flex;flex-direction:column;align-items:flex-end;gap:24px;text-align:right}
+.footeremail{font:500 28px/1.2 var(--sans);letter-spacing:-.03em;text-transform:uppercase}
+.footersocial{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.footersociallinks.accent{color:var(--coral-deep)}
+.footersmall{font:400 13px/1.5 var(--sans);color:var(--grey);max-width:380px}
+.footerwordmark{overflow:hidden}
+/* sólido y oscuro como el "TERROT" final (el gris es solo la animación de opacidad de las letras);
+   20.5vw en vez de 24vw porque NEWLIFE tiene 7 letras y TERROT 6 */
+.wordmark{margin-top:100px;font:500 20.5vw/.8 var(--sans);letter-spacing:-.03em;white-space:nowrap;transform:translateY(10%);color:var(--ink);user-select:none}
+
+/* ===== barra fija móvil ===== */
+.mbar{display:none}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:991px){
+  .h2-about{font-size:36px;letter-spacing:-1.2px}
+  .displaymarquee{font-size:220px;line-height:200px}
+  .main-container{grid-template-columns:1fr;gap:24px}
+  .slider{padding-left:0}
+  .cardstats{padding:20px 24px}
+  .slider-arrow.prev{left:8px}.slider-arrow.next{right:8px}
+  .pricing-card-wrapper{grid-template-columns:1fr}
+  .fac-grid{grid-template-columns:1fr 1fr}
+  .doors,.nurse-grid,.family-list{grid-template-columns:1fr}
+  .nurse-photo{min-height:240px}
+  .faqcontainer{grid-template-columns:1fr}
+  .texthover{font-size:28px}
+}
+@media (max-width:767px){
+  body{padding-bottom:78px}
+  .nav{padding:12px 16px}
+  .nav-call{display:none}
+  /* celular, medido en terrot 390x844: h1 a 64 px (84px/0.9; aquí 58px para que "NewLife Wound Care"
+     quepa en 2 líneas como "Terrot Studio"), subtítulo 16px, tarjetas 280x430, curva de arriba 7rem y de abajo 5rem */
+  .herocentercontent{margin-top:64px}
+  .headinghero{font-size:58px;line-height:.9}
+  .subtitle{font-size:16px}
+  .projectcardinfo{width:17.5rem;height:26.875rem}
+  .projectname{font-size:22px}
+  .outer-curve-top{height:7rem}.outer-curve{height:5rem}
+  .h2-about{font-size:23px;letter-spacing:-.92px}
+  .titlelabel.bottomrem{padding-bottom:2rem}
+  .displaymarquee{font-size:180px;line-height:180px;letter-spacing:-7.2px;-webkit-text-stroke-width:1.5px}
+  .enterprisename{font-size:24px}
+  .fac-card{padding:1.25rem;min-height:140px;gap:18px}
+  .opts,.in-row{grid-template-columns:1fr}
+  .in-nav .btn{min-width:0;flex:1}
+  .hero-lines{font-size:14px;gap:6px 14px}
+  .hero-cta .btn{min-width:0;flex:1 1 100%}
+  .door{padding:24px}
+  .nurse-card{padding:24px}
+  .nurse-card dl{grid-template-columns:1fr;gap:4px}
+  .nurse-card dd{margin-bottom:10px}
+  .fac-n{font-size:28px}
+  .fac-t{font-size:16px}
+  .servicename{font-size:36px}
+  .textbig{font-size:15px}
+  .textbig.big{font-size:28px}
+  .pricing-first-card,.pricing-second-card{padding:24px 20px}
+  .msgcta{font-size:36px;letter-spacing:normal}
+  .sectioncalltoaction .btn.light{font-size:16px}
+  .footeremail{font-size:18px}
+  .worksgridfeatured{grid-template-columns:1fr}
+  .viewallprojectscontainer{flex-direction:column;align-items:flex-start}
+  .serviceitem{padding:32px 0}
+  .servicenamewrapper{gap:14px}
+  .servicedesc{padding-left:24px;font-size:16px}
+  .animationsimages{aspect-ratio:1/1}
+  .testimonialdiv{padding:32px 24px 28px;min-height:380px}
+  .slider-arrow{top:auto;bottom:-62px;transform:none}
+  .slider-arrow.prev{left:0}.slider-arrow.next{right:0}
+  .slider-nav{margin-top:28px}
+  .contactsection .formcard{grid-template-columns:1fr}
+  .footerright{align-items:flex-start;text-align:left}
+  .footersocial{align-items:flex-start}
+  .mbar{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:95;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line)}
+  .mbar a{flex:1;display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:999px;font:600 15px/1 var(--sans);text-decoration:none}
+  .mbar .call{border:1.5px solid var(--ink);color:var(--ink)}
+  .mbar .visit{background:var(--coral);color:var(--ink)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+  .project-content-wp{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main"><span lang="en">Skip to content</span><span lang="es">Ir al contenido</span></a>
+
+<!-- NAV -->
+<header class="nav">
+  <a class="nav-logo" href="#home" data-a="fade"><img src="img/newlife-horizontal.svg" width="1943" height="710" alt="NewLife Wound Care"></a>
+  <div class="nav-right">
+    <!-- idioma siempre visible (antes solo estaba dentro del menú y en el footer) -->
+    <button class="nav-lang" type="button" data-lang-toggle aria-label="Switch to Spanish (Español)" data-label-en="Switch to Spanish (Español)" data-label-es="Cambiar a inglés (English)"><b class="nl-en">EN</b><i>|</i><b class="nl-es">ES</b></button>
+    <a class="nav-call" href="tel:"><span lang="en">Call</span><span lang="es">Llamar</span> <span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menuParent"><span class="lettersappearonlyfirst" data-a="chars-load"><span lang="en">menu</span><span lang="es">menú</span></span></button>
+  </div>
+</header>
+<div class="menu-parent" id="menuParent">
+  <nav class="menu-drop-down" aria-label="Menu" data-label-en="Menu" data-label-es="Menú">
+    <a class="nav-link" href="#home"><span lang="en">Home</span><span lang="es">Inicio</span></a>
+    <a class="nav-link" href="#about"><span lang="en">About</span><span lang="es">Nosotros</span></a>
+    <a class="nav-link" href="#services"><span lang="en">Services</span><span lang="es">Servicios</span></a>
+    <a class="nav-link" href="#who"><span lang="en">Who we help</span><span lang="es">A quién ayudamos</span></a>
+    <a class="nav-link" href="#facilities"><span lang="en">For facilities</span><span lang="es">Instituciones</span></a>
+    <a class="nav-link" href="#faq"><span lang="en">FAQ</span><span lang="es">Preguntas</span></a>
+    <a class="nav-link" href="#contact"><span lang="en">Contact</span><span lang="es">Contacto</span></a>
+    <div class="socials-row">
+      <button class="lang-btn" type="button" data-lang-toggle><span lang="en">Español</span><span lang="es">English</span></button>
+      <a class="nav-call" href="tel:"><span lang="en">Call</span><span lang="es">Llamar</span> <span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></a>
+    </div>
+  </nav>
+</div>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="herocentercontent">
+    <div class="heromediumcontent" data-a="load-opacity">
+      <h1 class="headinghero">NewLife Wound Care</h1>
+      <p class="subtitle" data-a="chars-load">
+        <!-- 16-oct, vuelta a terrot: hero = título + 2 líneas en mayúsculas, sin botones (están "Llamar" arriba y la barra móvil).
+             La 2ª línea guarda lo que pidió la estrategia: quién paga y si le entienden. -->
+        <span lang="en"><span class="sub-l">Wound care in the comfort of your home.</span> <span class="sub-l">Medicare · Medi-Cal · Hablamos español</span></span>
+        <span lang="es"><span class="sub-l">Atendemos heridas en la comodidad de su hogar.</span> <span class="sub-l">Medicare · Medi-Cal · Español e inglés</span></span>
+      </p>
+    </div>
+  </div>
+  <div class="heroimagecontainer" data-a="hero-image">
+    <div class="project-content-wp">
+      <div class="outer-curve-top"></div>
+      <div class="project-content-wps" id="heroTrack">
+        <div class="project-list">
+          <!-- el video va 3º: la cinta arranca en -25%, así al cargar queda al centro-derecha y cruza la pantalla en los primeros segundos -->
+          <div class="projectcardinfo">
+            <img src="img/I2-llegada.jpg" alt="" loading="lazy">
+            <div class="maskimageproject"></div>
+            <div class="floatinglabelnameproject"><div class="projectname"><span lang="en">First visit at home</span><span lang="es">Primera visita en casa</span></div><div class="textcategory"><span lang="en">How it works</span><span lang="es">Cómo funciona</span></div></div>
+          </div>
+          <div class="projectcardinfo">
+            <img src="img/I3-insumos.jpg" alt="" loading="lazy">
+            <div class="maskimageproject"></div>
+            <div class="floatinglabelnameproject"><div class="projectname"><span lang="en">Advanced wound care</span><span lang="es">Cuidado avanzado de heridas</span></div><div class="textcategory"><span lang="en">Services</span><span lang="es">Servicios</span></div></div>
+          </div>
+          <div class="projectcardinfo">
+            <video autoplay muted loop playsinline preload="metadata" poster="img/H1-hero.jpg" aria-hidden="true"><source src="video/hero.mp4" type="video/mp4"></video>
+            <div class="maskimageproject"></div>
+            <div class="floatinglabelnameproject"><div class="projectname"><span lang="en">Mobile wound care</span><span lang="es">Cuidado de heridas a domicilio</span></div><div class="textcategory"><span lang="en">Services</span><span lang="es">Servicios</span></div></div>
+          </div>
+          <div class="projectcardinfo">
+            <img src="img/I4-plan.jpg" alt="" loading="lazy">
+            <div class="maskimageproject"></div>
+            <div class="floatinglabelnameproject"><div class="projectname"><span lang="en">A written care plan</span><span lang="es">Un plan de cuidado por escrito</span></div><div class="textcategory"><span lang="en">How it works</span><span lang="es">Cómo funciona</span></div></div>
+          </div>
+          <div class="projectcardinfo">
+            <img src="img/I5-manos.jpg" alt="" loading="lazy">
+            <div class="maskimageproject"></div>
+            <div class="floatinglabelnameproject"><div class="projectname"><span lang="en">Follow-up visits</span><span lang="es">Visitas de seguimiento</span></div><div class="textcategory"><span lang="en">How it works</span><span lang="es">Cómo funciona</span></div></div>
+          </div>
+          <div class="projectcardinfo">
+            <!-- 2º video de la vuelta (tarjetas 3 y 6): con 1 solo, el video cruzaba la pantalla en 2 s y no se volvía a ver -->
+            <video autoplay muted loop playsinline preload="metadata" poster="img/H1-hero.jpg" aria-hidden="true"><source src="video/hero.mp4" type="video/mp4"></video>
+            <div class="maskimageproject"></div>
+            <div class="floatinglabelnameproject"><div class="projectname"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></div><div class="textcategory"><span lang="en">Services</span><span lang="es">Servicios</span></div></div>
+          </div>
+        </div>
+        <!-- las otras 3 copias de la lista las clona el script (como las 4 listas de terrot) -->
+      </div>
+      <div class="outer-curve"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DOS PUERTAS (estrategia 1B: familia y profesional separadas desde el principio, como Amedisys y VITAS) -->
+<section class="doorsection" aria-label="Families and health professionals" data-label-en="Families and health professionals" data-label-es="Familias y profesionales de salud">
+  <!-- 16-oct: las dos puertas en el lenguaje de terrot (lista gigante con punto que entra de lado), no tarjetas -->
+  <div class="paddinglow"></div>
+  <div class="servicecontainer">
+    <a class="serviceitem biglink" href="#contact" data-a="svc" data-x="-50" data-start="25% bottom">
+      <div class="servicebody">
+        <div class="servicenamewrapper"><span class="servicedot"></span><span class="servicename"><span lang="en">For your family</span><span lang="es">Para su familia</span> <span class="arr">→</span></span></div>
+        <p class="servicedesc"><span lang="en">Someone you care for has a wound that won’t heal. Tell us who it’s for and where they live. We’ll call you and check their insurance before the first visit.</span><span lang="es">Alguien de su familia tiene una herida que no cierra. Díganos para quién es y dónde vive. Le llamamos y revisamos el seguro antes de la primera visita.</span></p>
+      </div>
+    </a>
+    <a class="serviceitem biglink" href="#facilities" data-a="svc" data-x="15" data-start="35% bottom">
+      <div class="servicebody">
+        <div class="servicenamewrapper"><span class="servicedot"></span><span class="servicename"><span lang="en">Refer a patient</span><span lang="es">Referir a un paciente</span> <span class="arr">→</span></span></div>
+        <p class="servicedesc"><span lang="en">For doctors, discharge planners, case managers, home health agencies, SNFs and clinics.</span><span lang="es">Para médicos, planificadores de alta, case managers, agencias de home health, SNF y clínicas.</span></p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="paddinglow"></div>
+  <div class="containerabout">
+    <p class="titlelabel bottomrem" data-a="chars-scroll"><span lang="en">about</span><span lang="es">nosotros</span></p>
+    <h2 class="h2-about" data-a="lines">
+      <span lang="en">We started <span class="textspan">NewLife</span> so care can happen in your living room.</span>
+      <span lang="es">Abrimos <span class="textspan">NewLife</span> para que el cuidado llegue a la sala de su casa.</span>
+    </h2>
+    <div class="aboutdivider" data-a="opacity"></div>
+  </div>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- SITUACIONES (featured works) -->
+<section class="featuredworks" aria-labelledby="t-familiar">
+  <div class="hero-big-text" aria-hidden="true">
+    <div class="heromarquee"><div class="displaymarquee">newlife •</div></div>
+    <div class="heromarquee"><div class="displaymarquee">• newlife</div></div>
+    <div class="heromarquee"><div class="displaymarquee">• newlife</div></div>
+    <div class="heromarquee"><div class="displaymarquee">• newlife</div></div>
+  </div>
+  <div class="paddinglow"></div>
+  <div class="headersection">
+    <h2 class="titlelabel bottomrem" id="t-familiar" data-a="chars-scroll"><span lang="en">Does this sound familiar?</span><span lang="es">¿Le suena conocido?</span></h2>
+  </div>
+  <div class="containerworks">
+    <ul class="worksgridfeatured">
+      <li><a class="projectlink" href="#contact">
+        <img class="projectthumbnail" src="img/H1-hero.jpg" alt="" loading="lazy">
+        <div class="maskimageproject"></div>
+        <div class="projectcontent">
+          <div class="projecttitlecontainer" data-a="opacity">
+            <p class="enterprisename"><span lang="en">The wound looks the same as it did a month ago.</span><span lang="es">La herida se ve igual que hace un mes.</span></p>
+            <span class="arrowprojectview" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          <div class="hoverdiv"><span class="texthover"><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></span></div>
+          <div class="projectcontentfooter" data-a="opacity">01</div>
+        </div>
+      </a></li>
+      <li><a class="projectlink" href="#contact">
+        <img class="projectthumbnail" src="img/I2-llegada.jpg" alt="" loading="lazy">
+        <div class="maskimageproject"></div>
+        <div class="projectcontent">
+          <div class="projecttitlecontainer" data-a="opacity">
+            <p class="enterprisename"><span lang="en">Getting to the clinic takes half the day, and someone has to drive.</span><span lang="es">Ir a la clínica toma medio día y alguien tiene que manejar.</span></p>
+            <span class="arrowprojectview" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          <div class="hoverdiv"><span class="texthover"><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></span></div>
+          <div class="projectcontentfooter" data-a="opacity">02</div>
+        </div>
+      </a></li>
+      <li><a class="projectlink" href="#contact">
+        <img class="projectthumbnail" src="img/I3-insumos.jpg" alt="" loading="lazy">
+        <div class="maskimageproject"></div>
+        <div class="projectcontent">
+          <div class="projecttitlecontainer" data-a="opacity">
+            <p class="enterprisename"><span lang="en">You change the dressing at home and aren’t sure you’re doing it right.</span><span lang="es">Cambia el vendaje en casa y no sabe si lo está haciendo bien.</span></p>
+            <span class="arrowprojectview" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          <div class="hoverdiv"><span class="texthover"><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></span></div>
+          <div class="projectcontentfooter" data-a="opacity">03</div>
+        </div>
+      </a></li>
+      <li><a class="projectlink" href="#contact">
+        <img class="projectthumbnail" src="img/I4-plan.jpg" alt="" loading="lazy">
+        <div class="maskimageproject"></div>
+        <div class="projectcontent">
+          <div class="projecttitlecontainer" data-a="opacity">
+            <p class="enterprisename"><span lang="en">Your mom or dad needs help, and you can’t take another day off work.</span><span lang="es">Su mamá o su papá necesita ayuda y usted ya no puede faltar otro día al trabajo.</span></p>
+            <span class="arrowprojectview" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          <div class="hoverdiv"><span class="texthover"><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></span></div>
+          <div class="projectcontentfooter" data-a="opacity">04</div>
+        </div>
+      </a></li>
+    </ul>
+    <div class="viewallprojectscontainer">
+      <p class="paragraphworks"><span lang="en">A wound that won’t close wears a person down. It means dressing changes, trips to the clinic and a lot of worry for the family. That’s the moment to call us.</span><span lang="es">Una herida que no cierra cansa a cualquiera. Son cambios de vendaje, viajes a la clínica y mucha preocupación para la familia. Ese es el momento de llamarnos.</span></p>
+      <a class="btn" href="#contact"><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
+    </div>
+  </div>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- PASOS (las líneas grandes de servicios de terrot) -->
+<section class="services" aria-labelledby="t-how">
+  <div class="paddinglow"></div>
+  <div class="servicecontainer">
+    <div class="headersection">
+      <h2 class="titlelabel" id="t-how" data-a="chars-scroll"><span lang="en">What happens after you call</span><span lang="es">Qué pasa después de que nos llama</span></h2>
+    </div>
+    <div class="paddinglow"></div>
+    <div class="serviceitem" data-a="svc" data-x="-50" data-start="25% bottom">
+      <div class="servicebody">
+        <div class="servicenamewrapper"><span class="servicedot"></span><h3 class="servicename"><span class="n">01</span> <span lang="en">You call</span><span lang="es">Usted llama</span></h3></div>
+        <p class="servicedesc"><span lang="en">You call us, or your doctor sends us a referral. We ask a few questions and check your coverage.</span><span lang="es">Usted nos llama o su médico nos manda un referido. Le hacemos unas preguntas y revisamos su cobertura.</span></p>
+      </div>
+    </div>
+    <div class="serviceitem" data-a="svc" data-x="15" data-start="35% bottom">
+      <div class="servicebody">
+        <div class="servicenamewrapper"><span class="servicedot"></span><h3 class="servicename"><span class="n">02</span> <span lang="en">First visit at home</span><span lang="es">Primera visita en casa</span></h3></div>
+        <p class="servicedesc"><span lang="en">We look at the wound, your health history and the medicines you take.</span><span lang="es">Revisamos la herida, su historial de salud y las medicinas que toma.</span></p>
+      </div>
+    </div>
+    <div class="serviceitem" data-a="svc" data-x="-10" data-start="35% bottom">
+      <div class="servicebody">
+        <div class="servicenamewrapper"><span class="servicedot"></span><h3 class="servicename"><span class="n">03</span> <span lang="en">A written care plan</span><span lang="es">Un plan de cuidado por escrito</span></h3></div>
+        <p class="servicedesc"><span lang="en">You and your family get a schedule for visits and dressing changes.</span><span lang="es">Usted y su familia reciben el calendario de visitas y de cambios de vendaje.</span></p>
+      </div>
+    </div>
+    <div class="serviceitem" data-a="svc" data-x="15" data-start="35% bottom">
+      <div class="servicebody">
+        <div class="servicenamewrapper"><span class="servicedot"></span><h3 class="servicename"><span class="n">04</span> <span lang="en">Follow-up visits</span><span lang="es">Visitas de seguimiento</span></h3></div>
+        <p class="servicedesc"><span lang="en">We measure the wound at every visit. If it isn’t improving, we review the plan with your doctor.</span><span lang="es">Medimos la herida en cada visita. Si no mejora, revisamos el plan con su médico.</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- QUIÉN VA A IR + QUÉ RECIBE LA FAMILIA (estrategia 1B, prueba nº 1: solo 1 de 22 competidores lo muestra).
+     Todo dato de la enfermera es PENDIENTE hasta que Roberto lo dé por escrito; la foto tiene que ser REAL (FTC/16 CFR 465). -->
+<!-- OCULTA (16-oct): sin foto ni datos reales es un recuadro vacío que resta. Se quita "hidden" cuando Roberto mande nombre, credencial, licencia y foto. -->
+<section class="nursesection" id="team" aria-labelledby="t-nurse" hidden>
+  <div class="paddinglow"></div>
+  <div class="headersection left">
+    <p class="titlelabel" data-a="chars-scroll"><span lang="en">Our team</span><span lang="es">Nuestro equipo</span></p>
+    <div class="divsection"></div>
+    <h2 class="titlesectionmedium" id="t-nurse" data-a="lines"><span lang="en">Who will come to your home</span><span lang="es">Quién va a ir a su casa</span></h2>
+  </div>
+  <div class="paddinglow"></div>
+  <div class="nurse-grid">
+    <div class="nurse-photo" data-a="opacity"><span><span lang="en">Real photo of the nurse</span><span lang="es">Foto real de la enfermera</span><br><span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></span></div>
+    <div class="nurse-card" data-a="opacity">
+      <dl>
+        <dt><span lang="en">Name</span><span lang="es">Nombre</span></dt><dd><span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></dd>
+        <dt><span lang="en">Credentials</span><span lang="es">Credenciales</span></dt><dd><span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></dd>
+        <dt><span lang="en">CA license</span><span lang="es">Licencia de CA</span></dt><dd><span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></dd>
+        <dt><span lang="en">Languages</span><span lang="es">Idiomas</span></dt><dd><span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></dd>
+      </dl>
+      <p class="nurse-note"><span lang="en">You can look up any California nursing license on the state’s public search, </span><span lang="es">Cualquier licencia de enfermería de California se puede consultar en el buscador público del estado, </span><a href="https://search.dca.ca.gov/" target="_blank" rel="noopener">search.dca.ca.gov</a>.</p>
+    </div>
+  </div>
+  <ul class="family-list">
+    <li data-a="opacity"><b><span lang="en">A written plan</span><span lang="es">Un plan por escrito</span></b><span lang="en">You and your family get the schedule of visits and dressing changes.</span><span lang="es">Usted y su familia reciben el calendario de visitas y de cambios de vendaje.</span></li>
+    <li data-a="opacity"><b><span lang="en">Learn as much as you want</span><span lang="es">Aprenda lo que quiera aprender</span></b><span lang="en">Whoever helps you day to day can learn how to keep the dressing clean between visits. If you’d rather not, that’s fine too.</span><span lang="es">Quien le ayuda en el día a día puede aprender a mantener limpio el vendaje entre visitas. Si prefiere no hacerlo, también está bien.</span></li>
+    <li data-a="opacity"><b><span lang="en">Your doctor stays informed</span><span lang="es">Su médico se mantiene al tanto</span></b><span lang="en">We send your doctor a report after the first visit and every time the plan changes.</span><span lang="es">Le mandamos un reporte a su médico después de la primera visita y cada vez que cambia el plan.</span></li>
+  </ul>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- IMAGEN QUE SE ABRE -->
+<section class="animationsimages" aria-label="Wound care at your door" data-label-en="Wound care at your door" data-label-es="Cuidado de heridas a domicilio">
+  <div class="imagecontainer2">
+    <div class="maskvisual"></div>
+    <img class="imageparallax1" src="img/I5-manos.jpg" loading="lazy"
+      alt="A nurse’s hand resting on an older woman’s hand" data-alt-es="La mano de una enfermera sobre la mano de una señora mayor">
+    <div class="containerphrases">
+      <p class="textvideoparallax1" data-a="opacity"><span lang="en">Every visit goes at your pace.</span><span lang="es">Cada visita va a su ritmo.</span></p>
+      <p class="textvideoparallax1" data-a="opacity"><span lang="en">Wound care that comes to your door.</span><span lang="es">Cuidado de heridas que llega a su puerta.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS EN CARRUSEL (slider de testimonios de terrot) -->
+<section class="testimonialsection" id="services" aria-labelledby="t-services">
+  <div class="paddinglow"></div>
+  <div class="headersection left">
+    <p class="titlelabel" data-a="chars-scroll"><span lang="en">Services</span><span lang="es">Servicios</span></p>
+    <div class="divsection"></div>
+    <h2 class="titlesectionmedium" id="t-services" data-a="lines"><span lang="en">What we do</span><span lang="es">Lo que hacemos</span></h2>
+  </div>
+  <div class="paddinglow"></div>
+  <div class="main-container" id="svcMain">
+    <div class="cardstats">
+      <div class="titlereview"><span lang="en">We accept</span><span lang="es">Aceptamos</span></div>
+      <div class="numberreview cov-list">Medicare<br>Medi-Cal</div>
+      <p class="descriptionreview"><span lang="en">Call us and we’ll check your benefits before the first visit.</span><span lang="es">Llámenos y revisamos sus beneficios antes de la primera visita.</span></p>
+    </div>
+    <div class="slider" id="svcSlider" role="region" aria-roledescription="carousel" aria-label="Services" data-label-en="Services" data-label-es="Servicios">
+      <div class="slider-mask" data-lenis-prevent>
+        <div class="slider-track">
+          <div class="slide" role="group" aria-roledescription="slide">
+            <div class="testimonialdiv">
+              <p class="slide-kicker"><span lang="en">Mobile wound care</span><span lang="es">Cuidado de heridas a domicilio</span></p>
+              <p class="textbig"><span lang="en">We bring the supplies and care for the wound in your home, when it’s clinically appropriate. You skip the waiting room and the ride to the clinic.</span><span lang="es">Llevamos los insumos y atendemos la herida en su casa, cuando es clínicamente apropiado. Se ahorra la sala de espera y el viaje a la clínica.</span></p>
+              <div class="bottomcontainer"><div class="person"><img class="bnwpic" src="img/I3-insumos.jpg" alt=""><div><div class="textlarge"><span lang="en">Mobile wound care</span><span lang="es">Cuidado de heridas a domicilio</span></div><div class="textmedium"><span lang="en">Services</span><span lang="es">Servicios</span></div></div></div><span class="slide-count">01 / 07</span></div>
+            </div>
+          </div>
+          <div class="slide" role="group" aria-roledescription="slide">
+            <div class="testimonialdiv">
+              <p class="slide-kicker"><span lang="en">Advanced wound care</span><span lang="es">Cuidado avanzado de heridas</span></p>
+              <p class="textbig"><span lang="en">When a wound needs more than a standard dressing, we look at why it is stuck and adjust the treatment based on a clinical evaluation and medical necessity.</span><span lang="es">Cuando una herida necesita más que un vendaje común, buscamos por qué se estancó y ajustamos el tratamiento según la evaluación clínica y la necesidad médica.</span></p>
+              <div class="bottomcontainer"><div class="person"><img class="bnwpic" src="img/I5-manos.jpg" alt=""><div><div class="textlarge"><span lang="en">Advanced wound care</span><span lang="es">Cuidado avanzado de heridas</span></div><div class="textmedium"><span lang="en">Services</span><span lang="es">Servicios</span></div></div></div><span class="slide-count">02 / 07</span></div>
+            </div>
+          </div>
+          <div class="slide" role="group" aria-roledescription="slide">
+            <div class="testimonialdiv">
+              <p class="slide-kicker"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></p>
+              <p class="textbig big"><span lang="en">Diabetic foot ulcers</span><span lang="es">Úlceras de pie diabético</span></p>
+              <div class="bottomcontainer"><div class="person"><span class="bnwpic ph">03</span><div><div class="textlarge"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></div></div></div><span class="slide-count">03 / 07</span></div>
+            </div>
+          </div>
+          <div class="slide" role="group" aria-roledescription="slide">
+            <div class="testimonialdiv">
+              <p class="slide-kicker"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></p>
+              <p class="textbig big"><span lang="en">Venous leg ulcers</span><span lang="es">Úlceras venosas en las piernas</span></p>
+              <div class="bottomcontainer"><div class="person"><span class="bnwpic ph">04</span><div><div class="textlarge"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></div></div></div><span class="slide-count">04 / 07</span></div>
+            </div>
+          </div>
+          <div class="slide" role="group" aria-roledescription="slide">
+            <div class="testimonialdiv">
+              <p class="slide-kicker"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></p>
+              <p class="textbig big"><span lang="en">Pressure injuries (bedsores)</span><span lang="es">Úlceras por presión (escaras)</span></p>
+              <div class="bottomcontainer"><div class="person"><span class="bnwpic ph">05</span><div><div class="textlarge"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></div></div></div><span class="slide-count">05 / 07</span></div>
+            </div>
+          </div>
+          <div class="slide" role="group" aria-roledescription="slide">
+            <div class="testimonialdiv">
+              <p class="slide-kicker"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></p>
+              <p class="textbig big"><span lang="en">Surgical wounds that are slow to heal</span><span lang="es">Heridas de cirugía que tardan en sanar</span></p>
+              <div class="bottomcontainer"><div class="person"><span class="bnwpic ph">06</span><div><div class="textlarge"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></div></div></div><span class="slide-count">06 / 07</span></div>
+            </div>
+          </div>
+          <div class="slide" role="group" aria-roledescription="slide">
+            <div class="testimonialdiv">
+              <p class="slide-kicker"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></p>
+              <p class="textbig big"><span lang="en">Skin tears and other chronic wounds</span><span lang="es">Desgarros de piel y otras heridas crónicas</span></p>
+              <div class="bottomcontainer"><div class="person"><span class="bnwpic ph">07</span><div><div class="textlarge"><span lang="en">Wounds we see</span><span lang="es">Heridas que atendemos</span></div></div></div><span class="slide-count">07 / 07</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="slider-arrow prev" type="button" data-label-en="Previous" data-label-es="Anterior" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="slider-arrow next" type="button" data-label-en="Next" data-label-es="Siguiente" aria-label="Next"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="slider-nav"></div>
+    </div>
+  </div>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- A QUIÉN AYUDAMOS + CONTACTO RÁPIDO (las 2 tarjetas de precios de terrot) -->
+<section class="pricing-section" id="who" aria-labelledby="t-who">
+  <div class="paddinglow"></div>
+  <div class="headersection left">
+    <div class="divsection"></div>
+    <h2 class="titlesectionmedium" id="t-who" data-a="lines"><span lang="en">Who we help</span><span lang="es">A quién ayudamos</span></h2>
+  </div>
+  <div class="paddinglow"></div>
+  <div class="containerpricingwrapper">
+    <div class="pricing-card-wrapper" id="pricingWrap">
+      <div class="pricing-first-card">
+        <div class="plantitle"><span lang="en">Patients and families</span><span lang="es">Pacientes y familias</span></div>
+        <ul class="pricing-list-wrapper">
+          <li class="pricing-list"><span lang="en">People with a wound that hasn’t improved in four weeks or more</span><span lang="es">Personas con una herida que lleva cuatro semanas o más sin mejorar</span></li>
+          <li class="pricing-list"><span lang="en">Older adults who have a hard time getting to a clinic</span><span lang="es">Adultos mayores a quienes se les complica ir a una clínica</span></li>
+          <li class="pricing-list"><span lang="en">Families caring for a parent at home who want a professional to check the wound</span><span lang="es">Familias que cuidan a su mamá o papá en casa y quieren que un profesional revise la herida</span></li>
+          <li class="pricing-list"><span lang="en">Doctors and case managers looking for home wound care for a patient</span><span lang="es">Médicos y case managers que buscan cuidado de heridas a domicilio para un paciente</span></li>
+        </ul>
+        <div class="pricing-bottom-wrapper">
+          <p class="coverage-note"><span lang="en">We accept Medicare and Medi-Cal. Call us and we’ll check your benefits before the first visit.</span><span lang="es">Aceptamos Medicare y Medi-Cal. Llámenos y revisamos sus beneficios antes de la primera visita.</span></p>
+          <a class="btn" href="#contact"><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
+        </div>
+      </div>
+      <div class="pricing-second-card">
+        <div class="plantitle"><span lang="en">Contact details</span><span lang="es">Datos de contacto</span></div>
+        <dl>
+          <div><dt><span lang="en">Phone</span><span lang="es">Teléfono</span></dt><dd><span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></dd></div>
+          <div><dt>Email</dt><dd><span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></dd></div>
+          <div><dt><span lang="en">Service area</span><span lang="es">Zona de servicio</span></dt><dd><span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></dd></div>
+        </dl>
+        <div class="quicklinks">
+          <a href="#contact"><span lang="en">New patient assessment</span><span lang="es">Evaluación de paciente nuevo</span></a>
+          <a href="#contact"><span lang="en">Follow-up appointment</span><span lang="es">Cita de seguimiento</span></a>
+          <a href="#contact"><span lang="en">Referral form for doctors and case managers</span><span lang="es">Formulario de referido para médicos y case managers</span></a>
+        </div>
+        <div class="pricing-bottom-wrapper">
+          <a class="btn" href="tel:"><span lang="en">Call us</span><span lang="es">Llámenos</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- INSTITUCIONES (15-oct, Roberto: "también ayudamos home healths, SNF, clínicas, etc.").
+     Solo lo que Roberto confirmó: los tipos de institución. Qué servicio exacto se les da va en la fase 2. -->
+<section class="facilities" id="facilities" aria-labelledby="t-fac">
+  <div class="paddinglow"></div>
+  <div class="headersection left">
+    <p class="titlelabel" data-a="chars-scroll"><span lang="en">For facilities</span><span lang="es">Para instituciones</span></p>
+    <div class="divsection"></div>
+    <h2 class="titlesectionmedium" id="t-fac" data-a="lines"><span lang="en">We also work with care providers</span><span lang="es">También trabajamos con instituciones de salud</span></h2>
+  </div>
+  <div class="paddinglow"></div>
+  <div class="containersection">
+    <!-- 16-oct: tipos de institución como la lista gigante de terrot, no tarjetas chicas -->
+    <div class="serviceitem facline" data-a="svc" data-x="-50" data-start="25% bottom"><div class="servicenamewrapper"><span class="servicedot"></span><span class="servicename"><span lang="en">Home health agencies</span><span lang="es">Agencias de home health</span></span></div></div>
+    <div class="serviceitem facline" data-a="svc" data-x="15" data-start="35% bottom"><div class="servicenamewrapper"><span class="servicedot"></span><span class="servicename"><span lang="en">Skilled nursing facilities</span><span lang="es">Centros de enfermería (SNF)</span></span></div></div>
+    <div class="serviceitem facline" data-a="svc" data-x="-10" data-start="35% bottom"><div class="servicenamewrapper"><span class="servicedot"></span><span class="servicename"><span lang="en">Clinics and doctor’s offices</span><span lang="es">Clínicas y consultorios</span></span></div></div>
+    <p class="fac-intro" data-a="opacity"><span lang="en">NewLife also works with other care providers. If you have patients with wounds that need specialized care, send us a referral or call our team.</span><span lang="es">NewLife también trabaja con otros proveedores de salud. Si tiene pacientes con heridas que necesitan atención especializada, envíenos un referido o llame a nuestro equipo.</span></p>
+    <div class="fac-cta" data-a="opacity">
+      <a class="btn" href="#contact"><span lang="en">Send a referral</span><span lang="es">Enviar un referido</span></a>
+      <a class="btn fac-call" href="tel:"><span lang="en">Talk to our team</span><span lang="es">Hablar con nuestro equipo</span></a>
+    </div>
+  </div>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- FAQ -->
+<section class="faqsection" id="faq" aria-labelledby="t-faq">
+  <div class="paddinglow"></div>
+  <div class="headersection left">
+    <p class="titlelabel" data-a="chars-scroll">FAQ</p>
+    <div class="divsection"></div>
+    <h2 class="titlesectionmedium" id="t-faq" data-a="lines"><span lang="en">Common questions</span><span lang="es">Preguntas frecuentes</span></h2>
+  </div>
+  <div class="paddinglow"></div>
+  <div class="containersection">
+    <div class="faqcontainer">
+      <div class="faq_wrap">
+        <div class="faq" data-a="opacity">
+          <button class="faq_top" type="button" aria-expanded="false"><span><span lang="en">Where do the visits happen?</span><span lang="es">¿Dónde son las visitas?</span></span><svg class="faq_icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"/></svg></button>
+          <div class="faq_bottom"><p><span lang="en">At your home, or wherever you’re staying, like a family member’s house, when it’s clinically appropriate.</span><span lang="es">En su casa o donde esté viviendo, por ejemplo en casa de un familiar, cuando es clínicamente apropiado.</span></p></div>
+        </div>
+        <div class="faq" data-a="opacity">
+          <button class="faq_top" type="button" aria-expanded="false"><span><span lang="en">Can a family member be there?</span><span lang="es">¿Puede estar presente un familiar?</span></span><svg class="faq_icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"/></svg></button>
+          <div class="faq_bottom"><p><span lang="en">Yes, and we’d like that. Whoever helps you day to day can learn how to keep the dressing clean between visits.</span><span lang="es">Sí, y nos gusta que esté. Quien le ayuda en el día a día puede aprender a mantener limpio el vendaje entre visitas.</span></p></div>
+        </div>
+      </div>
+      <div class="faq_wrap">
+        <div class="faq" data-a="opacity">
+          <button class="faq_top" type="button" aria-expanded="false"><span><span lang="en">What should I have ready for the first visit?</span><span lang="es">¿Qué debo tener a la mano para la primera visita?</span></span><svg class="faq_icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"/></svg></button>
+          <div class="faq_bottom"><p><span lang="en">Your insurance card, a list of the medicines you take, and the name of your primary care doctor.</span><span lang="es">Su tarjeta del seguro, una lista de las medicinas que toma y el nombre de su médico de cabecera.</span></p></div>
+        </div>
+        <div class="faq" data-a="opacity">
+          <button class="faq_top" type="button" aria-expanded="false"><span><span lang="en">Will you talk to my doctor?</span><span lang="es">¿Hablan con mi médico?</span></span><svg class="faq_icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m6 9l6 6l6-6"/></svg></button>
+          <div class="faq_bottom"><p><span lang="en">Yes. We send your doctor a report after the first visit and every time the plan changes.</span><span lang="es">Sí. Le mandamos un reporte a su médico después de la primera visita y cada vez que cambia el plan.</span></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contactsection" id="contact" aria-labelledby="t-contact">
+  <div class="paddinglow"></div>
+  <div class="headersection left">
+    <p class="titlelabel" data-a="chars-scroll"><span lang="en">Contact</span><span lang="es">Contacto</span></p>
+    <div class="divsection"></div>
+    <h2 class="titlesectionmedium" id="t-contact" data-a="lines"><span lang="en">Tell us about the wound</span><span lang="es">Cuéntenos sobre la herida</span></h2>
+  </div>
+  <div class="paddinglow"></div>
+  <!-- INTAKE POR PASOS (16-oct, Roberto: "interactiva, para recopilar toda la información de las heridas…
+       lo máximo para llegar con la ayuda correcta"). Una pregunta por pantalla, botones que se oprimen.
+       data-show = para qué respuestas de "request_for" aparece el paso. Sin JavaScript se ve todo como un
+       formulario largo y se envía igual.
+       ⚠ HIPAA: esto ya es información de salud. NO publicar enviándolo por mail() de PHP: el destino tiene
+       que ser un servicio con BAA (formulario HIPAA o servidor propio cifrado) y sin píxeles en esta sección. -->
+  <form class="intake" id="intake" action="enviar.php" method="post" novalidate data-a="opacity">
+    <div class="in-top">
+      <div class="in-count" aria-live="polite"><span lang="en">Step</span><span lang="es">Paso</span> <b id="inN">1</b> <span lang="en">of</span><span lang="es">de</span> <b id="inT">1</b></div>
+      <div class="in-bar"><i id="inBar"></i></div>
+    </div>
+
+    <fieldset class="step" data-step="for" data-auto>
+      <legend><span lang="en">Who is this for?</span><span lang="es">¿Para quién es?</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="request_for" value="myself" required><span><span lang="en">For me</span><span lang="es">Para mí</span></span></label>
+        <label class="opt"><input type="radio" name="request_for" value="family"><span><span lang="en">For a family member</span><span lang="es">Para un familiar</span></span></label>
+        <label class="opt"><input type="radio" name="request_for" value="referral"><span><span lang="en">I’m a professional referring a patient</span><span lang="es">Soy profesional y quiero referir a un paciente</span></span></label>
+        <label class="opt"><input type="radio" name="request_for" value="facility"><span><span lang="en">For my facility or agency (home health, SNF, clinic)</span><span lang="es">Para mi institución o agencia (home health, SNF, clínica)</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="pro" data-show="referral facility">
+      <legend><span lang="en">About you</span><span lang="es">Sobre usted</span></legend>
+      <p class="q"><span lang="en">Your role</span><span lang="es">Su cargo</span></p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="pro_role" value="doctor" required><span><span lang="en">Doctor / NP / PA</span><span lang="es">Médico / NP / PA</span></span></label>
+        <label class="opt"><input type="radio" name="pro_role" value="discharge"><span><span lang="en">Discharge planner</span><span lang="es">Planificador de alta</span></span></label>
+        <label class="opt"><input type="radio" name="pro_role" value="case_manager"><span>Case manager</span></label>
+        <label class="opt"><input type="radio" name="pro_role" value="nursing"><span><span lang="en">Director of Nursing / nurse</span><span lang="es">Director(a) de enfermería / enfermero(a)</span></span></label>
+        <label class="opt"><input type="radio" name="pro_role" value="admin"><span><span lang="en">Administrator</span><span lang="es">Administrador(a)</span></span></label>
+        <label class="opt"><input type="radio" name="pro_role" value="other"><span><span lang="en">Other</span><span lang="es">Otro</span></span></label>
+      </div>
+      <div class="field"><label for="in-org"><span lang="en">Organization name</span><span lang="es">Nombre de la organización</span></label><input id="in-org" name="organization" type="text" autocomplete="organization"></div>
+      <p class="q"><span lang="en">Type of organization</span><span lang="es">Tipo de organización</span></p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="org_type" value="home_health"><span>Home health</span></label>
+        <label class="opt"><input type="radio" name="org_type" value="snf"><span>SNF</span></label>
+        <label class="opt"><input type="radio" name="org_type" value="assisted_living"><span>Assisted living / board &amp; care</span></label>
+        <label class="opt"><input type="radio" name="org_type" value="clinic"><span><span lang="en">Clinic / doctor’s office</span><span lang="es">Clínica / consultorio</span></span></label>
+        <label class="opt"><input type="radio" name="org_type" value="hospital"><span><span lang="en">Hospital</span><span lang="es">Hospital</span></span></label>
+        <label class="opt"><input type="radio" name="org_type" value="hospice"><span>Hospice</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="fac" data-show="facility">
+      <legend><span lang="en">How can we help your facility?</span><span lang="es">¿Cómo podemos ayudar a su institución?</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="checkbox" name="fac_need" value="refer_patients"><span><span lang="en">Refer patients with wounds to NewLife</span><span lang="es">Referir pacientes con heridas a NewLife</span></span></label>
+        <label class="opt"><input type="checkbox" name="fac_need" value="onsite_visits"><span><span lang="en">Visits at our facility</span><span lang="es">Visitas en nuestra institución</span></span></label>
+        <label class="opt"><input type="checkbox" name="fac_need" value="staff_training"><span><span lang="en">Training for our staff</span><span lang="es">Capacitación para nuestro personal</span></span></label>
+        <label class="opt"><input type="checkbox" name="fac_need" value="talk"><span><span lang="en">Just talk for now</span><span lang="es">Por ahora, solo hablar</span></span></label>
+      </div>
+      <p class="q"><span lang="en">About how many patients with wounds do you see per month?</span><span lang="es">¿Cuántos pacientes con heridas tienen al mes, más o menos?</span></p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="patients_month" value="1-5"><span>1-5</span></label>
+        <label class="opt"><input type="radio" name="patients_month" value="6-20"><span>6-20</span></label>
+        <label class="opt"><input type="radio" name="patients_month" value="20+"><span><span lang="en">More than 20</span><span lang="es">Más de 20</span></span></label>
+        <label class="opt"><input type="radio" name="patients_month" value="unknown"><span><span lang="en">Not sure</span><span lang="es">No sé</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="wound" data-show="myself family referral" data-auto>
+      <legend><span lang="en">What kind of wound is it?</span><span lang="es">¿Qué tipo de herida es?</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="wound_type" value="diabetic_foot" required><span><span lang="en">Foot wound with diabetes</span><span lang="es">Herida en el pie, con diabetes</span></span></label>
+        <label class="opt"><input type="radio" name="wound_type" value="venous"><span><span lang="en">Leg ulcer (poor circulation)</span><span lang="es">Úlcera en la pierna (mala circulación)</span></span></label>
+        <label class="opt"><input type="radio" name="wound_type" value="pressure"><span><span lang="en">Pressure sore (bedsore)</span><span lang="es">Úlcera por presión (escara)</span></span></label>
+        <label class="opt"><input type="radio" name="wound_type" value="surgical"><span><span lang="en">Surgical wound that isn’t healing</span><span lang="es">Herida de cirugía que no sana</span></span></label>
+        <label class="opt"><input type="radio" name="wound_type" value="skin_tear"><span><span lang="en">Skin tear</span><span lang="es">Desgarro de piel</span></span></label>
+        <label class="opt"><input type="radio" name="wound_type" value="other"><span><span lang="en">Other</span><span lang="es">Otra</span></span></label>
+        <label class="opt"><input type="radio" name="wound_type" value="unsure"><span><span lang="en">I don’t know</span><span lang="es">No sé</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="duration" data-show="myself family referral" data-auto>
+      <legend><span lang="en">How long has the wound been there?</span><span lang="es">¿Cuánto tiempo tiene la herida?</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="wound_duration" value="lt2w" required><span><span lang="en">Less than 2 weeks</span><span lang="es">Menos de 2 semanas</span></span></label>
+        <label class="opt"><input type="radio" name="wound_duration" value="2-4w"><span><span lang="en">2 to 4 weeks</span><span lang="es">De 2 a 4 semanas</span></span></label>
+        <label class="opt"><input type="radio" name="wound_duration" value="1-3m"><span><span lang="en">1 to 3 months</span><span lang="es">De 1 a 3 meses</span></span></label>
+        <label class="opt"><input type="radio" name="wound_duration" value="gt3m"><span><span lang="en">More than 3 months</span><span lang="es">Más de 3 meses</span></span></label>
+        <label class="opt"><input type="radio" name="wound_duration" value="unsure"><span><span lang="en">I don’t know</span><span lang="es">No sé</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="status" data-show="myself family referral">
+      <legend><span lang="en">How does it look now? Choose all that apply.</span><span lang="es">¿Cómo está ahora? Marque todo lo que aplique.</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="checkbox" name="wound_status" value="same"><span><span lang="en">Looks the same, not improving</span><span lang="es">Se ve igual, no mejora</span></span></label>
+        <label class="opt"><input type="checkbox" name="wound_status" value="bigger"><span><span lang="en">Getting bigger</span><span lang="es">Está más grande</span></span></label>
+        <label class="opt"><input type="checkbox" name="wound_status" value="pain"><span><span lang="en">More pain</span><span lang="es">Duele más</span></span></label>
+        <label class="opt"><input type="checkbox" name="wound_status" value="drainage"><span><span lang="en">Fluid coming out</span><span lang="es">Le sale líquido</span></span></label>
+        <label class="opt"><input type="checkbox" name="wound_status" value="smell"><span><span lang="en">Bad smell</span><span lang="es">Mal olor</span></span></label>
+        <label class="opt"><input type="checkbox" name="wound_status" value="redness" data-alert><span><span lang="en">Redness or heat spreading around it</span><span lang="es">Enrojecimiento o calor que se extiende</span></span></label>
+        <label class="opt"><input type="checkbox" name="wound_status" value="fever" data-alert><span><span lang="en">Fever or chills</span><span lang="es">Fiebre o escalofríos</span></span></label>
+      </div>
+      <p class="in-alert" hidden role="alert"><span lang="en">Fever, chills, or redness or warmth spreading around the wound can be signs of an infection that needs care today. Call your doctor now. If it’s an emergency, call 911. You can still finish this form.</span><span lang="es">La fiebre, los escalofríos, o el enrojecimiento o el calor que se extiende alrededor de la herida pueden ser señales de una infección que necesita atención hoy. Llame a su médico ahora. Si es una emergencia, llame al 911. De todos modos, puede terminar este formulario.</span></p>
+    </fieldset>
+
+    <fieldset class="step" data-step="care" data-show="myself family referral" data-auto>
+      <legend><span lang="en">Who is caring for the wound right now?</span><span lang="es">¿Quién está curando la herida ahora?</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="current_care" value="nobody" required><span><span lang="en">Nobody</span><span lang="es">Nadie</span></span></label>
+        <label class="opt"><input type="radio" name="current_care" value="self_family"><span><span lang="en">The patient or a family member</span><span lang="es">El paciente o un familiar</span></span></label>
+        <label class="opt"><input type="radio" name="current_care" value="home_health"><span><span lang="en">A home health nurse</span><span lang="es">Una enfermera de home health</span></span></label>
+        <label class="opt"><input type="radio" name="current_care" value="clinic"><span><span lang="en">A clinic or wound center</span><span lang="es">Una clínica o centro de heridas</span></span></label>
+        <label class="opt"><input type="radio" name="current_care" value="facility"><span><span lang="en">Staff where the patient lives (SNF, assisted living)</span><span lang="es">El personal donde vive (SNF, assisted living)</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="doctor" data-show="myself family referral">
+      <legend><span lang="en">The patient’s doctor</span><span lang="es">El médico del paciente</span></legend>
+      <p class="q"><span lang="en">Does the patient have a primary care doctor?</span><span lang="es">¿Tiene médico primario (de cabecera)?</span></p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="has_pcp" value="yes" required><span><span lang="en">Yes</span><span lang="es">Sí</span></span></label>
+        <label class="opt"><input type="radio" name="has_pcp" value="no"><span>No</span></label>
+        <label class="opt"><input type="radio" name="has_pcp" value="unsure"><span><span lang="en">I don’t know</span><span lang="es">No sé</span></span></label>
+      </div>
+      <div class="field" data-if="has_pcp=yes"><label for="in-pcp"><span lang="en">Doctor’s name (optional)</span><span lang="es">Nombre del médico (opcional)</span></label><input id="in-pcp" name="pcp_name" type="text"></div>
+      <p class="q"><span lang="en">Does the patient have a doctor’s order or referral for wound care?</span><span lang="es">¿Tiene una orden o referido del médico para el cuidado de la herida?</span></p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="has_order" value="yes"><span><span lang="en">Yes</span><span lang="es">Sí</span></span></label>
+        <label class="opt"><input type="radio" name="has_order" value="no"><span>No</span></label>
+        <label class="opt"><input type="radio" name="has_order" value="unsure"><span><span lang="en">I don’t know</span><span lang="es">No sé</span></span></label>
+      </div>
+      <p class="in-hint"><span lang="en">If not, that’s OK. We’ll explain how to ask your doctor for one.</span><span lang="es">Si no la tiene, no se preocupe. Le explicamos cómo pedírsela a su médico.</span></p>
+    </fieldset>
+
+    <fieldset class="step" data-step="insurance" data-show="myself family referral">
+      <legend><span lang="en">Does the patient have insurance?</span><span lang="es">¿Tiene seguro médico (aseguranza)?</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="insurance" value="medicare" required><span><span lang="en">Original Medicare (red, white and blue card)</span><span lang="es">Medicare original (tarjeta roja, blanca y azul)</span></span></label>
+        <label class="opt"><input type="radio" name="insurance" value="medicare_advantage"><span><span lang="en">Medicare Advantage plan</span><span lang="es">Plan Medicare Advantage</span></span></label>
+        <label class="opt"><input type="radio" name="insurance" value="medi_cal"><span>Medi-Cal</span></label>
+        <label class="opt"><input type="radio" name="insurance" value="dual"><span><span lang="en">Medicare and Medi-Cal</span><span lang="es">Medicare y Medi-Cal</span></span></label>
+        <label class="opt"><input type="radio" name="insurance" value="private"><span><span lang="en">Private or work insurance</span><span lang="es">Seguro privado o del trabajo</span></span></label>
+        <label class="opt"><input type="radio" name="insurance" value="none"><span><span lang="en">No insurance</span><span lang="es">No tiene seguro</span></span></label>
+        <label class="opt"><input type="radio" name="insurance" value="unsure"><span><span lang="en">I don’t know</span><span lang="es">No sé</span></span></label>
+      </div>
+      <div class="field" data-if="insurance=medicare_advantage,medi_cal,dual,private"><label for="in-plan"><span lang="en">Name of the plan, as it appears on the card (optional)</span><span lang="es">Nombre del plan, como sale en la tarjeta (opcional)</span></label><input id="in-plan" name="plan_name" type="text"></div>
+      <p class="in-hint"><span lang="en">We check the coverage with you before the first visit.</span><span lang="es">Revisamos la cobertura con usted antes de la primera visita.</span></p>
+    </fieldset>
+
+    <fieldset class="step" data-step="home" data-show="myself family referral">
+      <legend><span lang="en">Where does the patient live?</span><span lang="es">¿Dónde vive el paciente?</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="residence" value="own_home" required><span><span lang="en">At home</span><span lang="es">En su casa</span></span></label>
+        <label class="opt"><input type="radio" name="residence" value="family_home"><span><span lang="en">With family</span><span lang="es">Con un familiar</span></span></label>
+        <label class="opt"><input type="radio" name="residence" value="assisted_living"><span>Assisted living / board &amp; care</span></label>
+        <label class="opt"><input type="radio" name="residence" value="snf"><span><span lang="en">Nursing facility (SNF)</span><span lang="es">Centro de enfermería (SNF)</span></span></label>
+      </div>
+      <p class="q"><span lang="en">Can the patient leave home easily?</span><span lang="es">¿Puede salir de casa fácilmente?</span></p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="mobility" value="yes"><span><span lang="en">Yes</span><span lang="es">Sí</span></span></label>
+        <label class="opt"><input type="radio" name="mobility" value="with_help"><span><span lang="en">Only with help</span><span lang="es">Solo con ayuda</span></span></label>
+        <label class="opt"><input type="radio" name="mobility" value="hard"><span><span lang="en">Almost never, it’s very hard</span><span lang="es">Casi nunca, le cuesta mucho</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="health" data-show="myself family referral">
+      <legend><span lang="en">Other health conditions. Choose all that apply.</span><span lang="es">Otras condiciones de salud. Marque todo lo que aplique.</span></legend>
+      <div class="opts">
+        <label class="opt"><input type="checkbox" name="conditions" value="diabetes"><span><span lang="en">Diabetes</span><span lang="es">Diabetes</span></span></label>
+        <label class="opt"><input type="checkbox" name="conditions" value="circulation"><span><span lang="en">Poor circulation or swollen legs</span><span lang="es">Mala circulación o piernas hinchadas</span></span></label>
+        <label class="opt"><input type="checkbox" name="conditions" value="kidney"><span><span lang="en">Kidney disease or dialysis</span><span lang="es">Problemas de riñón o diálisis</span></span></label>
+        <label class="opt"><input type="checkbox" name="conditions" value="bed_wheelchair"><span><span lang="en">Spends most of the day in bed or a wheelchair</span><span lang="es">Pasa casi todo el día en cama o en silla de ruedas</span></span></label>
+        <label class="opt"><input type="checkbox" name="conditions" value="none"><span><span lang="en">None of these</span><span lang="es">Ninguna de estas</span></span></label>
+        <label class="opt"><input type="checkbox" name="conditions" value="prefer_not"><span><span lang="en">I’d rather tell you by phone</span><span lang="es">Prefiero decirlo por teléfono</span></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="where">
+      <legend><span lang="en">What ZIP code is the care for?</span><span lang="es">¿En qué código postal sería la atención?</span></legend>
+      <div class="in-row">
+        <div class="field"><label for="in-zip"><span lang="en">ZIP code</span><span lang="es">Código postal</span></label><input id="in-zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" required></div>
+        <div class="field"><label for="in-city"><span lang="en">City</span><span lang="es">Ciudad</span></label><input id="in-city" name="city" type="text" autocomplete="address-level2"></div>
+      </div>
+    </fieldset>
+
+    <fieldset class="step" data-step="contact">
+      <legend><span lang="en">How do we reach you?</span><span lang="es">¿Cómo le contactamos?</span></legend>
+      <div class="in-row">
+        <div class="field"><label for="in-name"><span lang="en">Your name</span><span lang="es">Su nombre</span></label><input id="in-name" name="name" type="text" autocomplete="name" required></div>
+        <div class="field" data-show="family"><label for="in-rel"><span lang="en">Relationship to the patient</span><span lang="es">Parentesco con el paciente</span></label><input id="in-rel" name="relationship" type="text"></div>
+        <div class="field" data-show="family referral"><label for="in-pname"><span lang="en">Patient’s name (optional)</span><span lang="es">Nombre del paciente (opcional)</span></label><input id="in-pname" name="patient_name" type="text"></div>
+        <div class="field"><label for="in-phone"><span lang="en">Phone</span><span lang="es">Teléfono</span></label><input id="in-phone" name="phone" type="tel" autocomplete="tel" required></div>
+        <div class="field"><label for="in-email"><span lang="en">Email (optional)</span><span lang="es">Email (opcional)</span></label><input id="in-email" name="email" type="email" autocomplete="email"></div>
+      </div>
+      <p class="q"><span lang="en">Preferred language</span><span lang="es">Idioma preferido</span></p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="language" value="es"><span>Español</span></label>
+        <label class="opt"><input type="radio" name="language" value="en"><span>English</span></label>
+      </div>
+      <p class="q"><span lang="en">Best time to call</span><span lang="es">Mejor hora para llamarle</span></p>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="best_time" value="morning"><span><span lang="en">Morning</span><span lang="es">Mañana</span></span></label>
+        <label class="opt"><input type="radio" name="best_time" value="afternoon"><span><span lang="en">Afternoon</span><span lang="es">Tarde</span></span></label>
+        <label class="opt"><input type="radio" name="best_time" value="evening"><span><span lang="en">Evening</span><span lang="es">Noche</span></span></label>
+        <label class="opt"><input type="radio" name="best_time" value="any"><span><span lang="en">Any time</span><span lang="es">Cualquier hora</span></span></label>
+      </div>
+      <label class="consent"><input name="consent" type="checkbox" value="yes" required><span><span lang="en">I agree that NewLife Wound Care may contact me about this request. The health information I share is used only to arrange care.</span><span lang="es">Acepto que NewLife Wound Care me contacte sobre esta solicitud. La información de salud que comparto se usa solo para coordinar la atención.</span></span></label>
+    </fieldset>
+
+    <div class="in-nav">
+      <button type="button" class="in-back" id="inBack"><span lang="en">← Back</span><span lang="es">← Atrás</span></button>
+      <button type="button" class="btn in-next" id="inNext"><span lang="en">Next</span><span lang="es">Siguiente</span></button>
+      <button type="submit" class="btn in-send" id="inSend"><span lang="en">Send</span><span lang="es">Enviar</span></button>
+    </div>
+    <p class="in-err" id="inErr" role="alert" hidden><span lang="en">Please answer this question to continue.</span><span lang="es">Por favor, conteste esta pregunta para continuar.</span></p>
+  </form>
+  <div class="paddinglow"></div>
+</section>
+
+<!-- CTA con video de fondo -->
+<div class="sectioncalltoaction">
+  <div class="cta__img"><video autoplay muted loop playsinline preload="none" poster="img/H1-hero.jpg" aria-hidden="true"><source src="video/hero.mp4" type="video/mp4"></video></div>
+  <div class="cta__content-wrap">
+    <p class="msgcta" data-a="opacity"><span lang="en">When a wound stops getting better, call us.</span><span lang="es">Cuando una herida deja de mejorar, llámenos.</span></p>
+    <a class="btn light" href="#contact"><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
+  </div>
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footerwrapper">
+    <div class="footertop">
+      <div class="footerleft">
+        <a class="footerlogo" href="#home" data-a="opacity"><img src="img/newlife-horizontal.svg" width="1943" height="710" alt="NewLife Wound Care" loading="lazy"></a>
+        <nav class="footernav" aria-label="Site links" data-label-en="Site links" data-label-es="Enlaces del sitio">
+          <a class="footerlinks" href="#home"><span lang="en">Home</span><span lang="es">Inicio</span></a>
+          <a class="footerlinks" href="#about"><span lang="en">About</span><span lang="es">Nosotros</span></a>
+          <a class="footerlinks" href="#services"><span lang="en">Services</span><span lang="es">Servicios</span></a>
+          <a class="footerlinks" href="#who"><span lang="en">Who we help</span><span lang="es">A quién ayudamos</span></a>
+          <a class="footerlinks" href="#facilities"><span lang="en">For facilities</span><span lang="es">Instituciones</span></a>
+          <a class="footerlinks" href="#faq"><span lang="en">FAQ</span><span lang="es">Preguntas</span></a>
+          <a class="footerlinks" href="#contact"><span lang="en">Contact</span><span lang="es">Contacto</span></a>
+        </nav>
+      </div>
+      <div class="footerright">
+        <div class="footeremail">Email <span class="pending"><span lang="en">Pending</span><span lang="es">Pendiente</span></span></div>
+        <div class="footersocial">
+          <a class="footersociallinks" href="#"><span lang="en">Privacy notice</span><span lang="es">Aviso de privacidad</span></a>
+          <button class="footersociallinks accent" type="button" data-lang-toggle style="background:none;border:0;padding:0;cursor:pointer"><span lang="en">Español</span><span lang="es">English</span></button>
+          <span class="footersociallinks">© 2026 NewLife Wound Care</span>
+        </div>
+        <p class="footersmall"><span lang="en">This website does not give medical advice. In an emergency, call 911.</span><span lang="es">Este sitio no da consejo médico. En una emergencia, llame al 911.</span></p>
+      </div>
+    </div>
+    <div class="footerwordmark" aria-hidden="true"><div class="wordmark" data-a="chars-scroll">NEWLIFE</div></div>
+  </div>
+</footer>
+
+<div class="mbar">
+  <a class="call" href="tel:"><span lang="en">Call</span><span lang="es">Llamar</span></a>
+  <a class="visit" href="#contact"><span lang="en">Request a visit</span><span lang="es">Pedir visita</span></a>
+</div>
+
+<script src="js/gsap.min.js"></script>
+<script src="js/ScrollTrigger.min.js"></script>
+<script src="js/SplitText.min.js"></script>
+<script src="js/lenis.min.js"></script>
+<script>
+(function(){
+  var root=document.documentElement;
+  var LANG=root.getAttribute("data-lang")==="es"?"es":"en";
+  var RM=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var $=function(s,c){return (c||document).querySelector(s)};
+  var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+
+  /* ---------- Idioma: se borra el que no toca (así SplitText mide solo texto visible).
+     Cambiar idioma = guardar y recargar: las animaciones vuelven a correr limpias. ---------- */
+  $$("[lang]").forEach(function(el){if(el!==root&&el.getAttribute("lang")!==LANG)el.remove()});
+  $$("[data-alt-es]").forEach(function(el){if(LANG==="es")el.alt=el.getAttribute("data-alt-es")});
+  $$("[data-label-"+LANG+"]").forEach(function(el){el.setAttribute("aria-label",el.getAttribute("data-label-"+LANG))});
+  document.title=LANG==="es"?"NewLife Wound Care | Cuidado de heridas que llega a su puerta":"NewLife Wound Care | Wound care that comes to your door";
+  $$("[data-lang-toggle]").forEach(function(b){b.addEventListener("click",function(){
+    try{localStorage.setItem("nl-lang",LANG==="es"?"en":"es")}catch(e){}
+    location.reload();
+  })});
+
+  /* ---------- Hero: 4 copias de la lista de tarjetas (terrot tiene 4) ---------- */
+  var track=$("#heroTrack"),list=$(".project-list",track);
+  for(var i=0;i<3;i++){var c=list.cloneNode(true);c.setAttribute("aria-hidden","true");track.appendChild(c)}
+
+  /* Videos: los clonados no arrancan solos. Se reproducen cuando están en pantalla y se pausan fuera
+     (5 copias de hero.mp4 corriendo a la vez gastan batería en el celular). */
+  var vids=$$("video");
+  vids.forEach(function(v){v.muted=true;v.playsInline=true});
+  if(!RM&&"IntersectionObserver" in window){
+    var vio=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){var p=e.target.play();if(p&&p.catch)p.catch(function(){})}else e.target.pause();
+    })},{rootMargin:"200px"});
+    vids.forEach(function(v){vio.observe(v)});
+  }else if(RM){vids.forEach(function(v){v.removeAttribute("autoplay");v.pause()})}
+
+  /* ---------- FAQ (click: height 0->auto .25 s + ícono 180°, como terrot) ---------- */
+  $$(".faq_top").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var open=btn.getAttribute("aria-expanded")!=="true",bot=btn.nextElementSibling,ic=$(".faq_icon",btn);
+      btn.setAttribute("aria-expanded",open?"true":"false");
+      if(window.gsap&&!RM){
+        gsap.to(bot,{height:open?"auto":0,duration:.25});
+        gsap.to(ic,{rotation:open?180:0,duration:.25});
+      }else{bot.style.height=open?"auto":"0px";ic.style.transform=open?"rotate(180deg)":"none"}
+    });
+  });
+
+  /* ---------- Menú (togglePlayReverse) ---------- */
+  var menuBtn=$("#menuBtn"),menuParent=$("#menuParent"),menuTl=null,menuOpen=false;
+  function buildMenuTl(){
+    var tl=gsap.timeline({paused:true});
+    tl.set(menuParent,{display:"flex",pointerEvents:"auto"},0)
+      .fromTo(".menu-drop-down",{opacity:0},{opacity:1,duration:.4,ease:"power1.inOut"},0)
+      .fromTo(".nav-link",{opacity:0,yPercent:100},{opacity:1,yPercent:0,duration:.4,ease:"power2.in",stagger:{amount:.3}},.4)
+      .fromTo(".socials-row",{opacity:0},{opacity:1,duration:.4,ease:"power1.in"},.5);
+    return tl;
+  }
+  function setMenu(open){
+    menuOpen=open;menuBtn.setAttribute("aria-expanded",open?"true":"false");
+    if(window.gsap&&!RM){menuTl=menuTl||buildMenuTl();open?menuTl.play():menuTl.reverse()}
+    else{menuParent.style.display=open?"flex":"none";menuParent.style.pointerEvents=open?"auto":"none";$(".menu-drop-down").style.opacity=open?1:0}
+  }
+  menuBtn.addEventListener("click",function(){setMenu(!menuOpen)});
+  menuParent.addEventListener("click",function(e){if(e.target===menuParent||e.target.closest(".nav-link"))setMenu(false)});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&menuOpen){setMenu(false);menuBtn.focus()}});
+
+  /* ---------- Carrusel de servicios (slider de terrot: autoplay 2.5 s, slide .5 s, infinito, flechas y puntos) ---------- */
+  (function(){
+    var sl=$("#svcSlider"),tr=$(".slider-track",sl),slides=$$(".slide",tr),N=slides.length,nav=$(".slider-nav",sl);
+    var first=slides[0].cloneNode(true),last=slides[N-1].cloneNode(true);
+    first.setAttribute("aria-hidden","true");last.setAttribute("aria-hidden","true");
+    tr.appendChild(first);tr.insertBefore(last,slides[0]);
+    var pos=1,timer=null,paused=false,busy=false;
+    var dots=slides.map(function(s,k){
+      s.setAttribute("aria-label",(k+1)+" / "+N);
+      var d=document.createElement("button");d.type="button";d.className="slider-dot";
+      d.setAttribute("aria-label",(LANG==="es"?"Ir a la tarjeta ":"Go to card ")+(k+1));
+      d.addEventListener("click",function(){go(k+1);restart()});nav.appendChild(d);return d;
+    });
+    function place(anim){tr.classList.toggle("no-tr",!anim);tr.style.transform="translateX("+(-pos*100)+"%)"}
+    function mark(){var k=(pos-1+N)%N;dots.forEach(function(d,j){d.setAttribute("aria-current",j===k?"true":"false")})}
+    function go(p){if(busy||p===pos)return;busy=!RM;pos=p;place(!RM);mark();if(RM)fix()}
+    function fix(){busy=false;if(pos===0){pos=N;place(false)}else if(pos===N+1){pos=1;place(false)}mark()}
+    tr.addEventListener("transitionend",function(e){if(e.target===tr)fix()});
+    $(".prev",sl).addEventListener("click",function(){go(pos-1);restart()});
+    $(".next",sl).addEventListener("click",function(){go(pos+1);restart()});
+    function start(){if(RM||paused)return;stop();timer=setInterval(function(){go(pos+1)},2500)}
+    function stop(){if(timer){clearInterval(timer);timer=null}}
+    function restart(){stop();start()}
+    sl.addEventListener("mouseenter",function(){paused=true;stop()});
+    sl.addEventListener("mouseleave",function(){paused=false;start()});
+    sl.addEventListener("focusin",function(){paused=true;stop()});
+    sl.addEventListener("focusout",function(){paused=false;start()});
+    var sx=null;
+    sl.addEventListener("touchstart",function(e){sx=e.touches[0].clientX;stop()},{passive:true});
+    sl.addEventListener("touchend",function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(pos+(dx<0?1:-1));sx=null;start()});
+    place(false);mark();
+    if("IntersectionObserver" in window){new IntersectionObserver(function(es){es[0].isIntersecting?start():stop()}).observe(sl)}else start();
+  })();
+
+  /* ---------- Intake por pasos ---------- */
+  (function(){
+    var f=$("#intake");if(!f)return;
+    f.classList.add("js");
+    var steps=$$(".step",f),cur=0,err=$("#inErr");
+    var val=function(n){var c=f.querySelector('input[name="'+n+'"]:checked');return c?c.value:""};
+    var who=function(){return val("request_for")};
+    var shows=function(el){var s=el.getAttribute("data-show");return !s||s.split(" ").indexOf(who()||"family")>-1};
+    var active=function(){return steps.filter(shows)};
+    function conds(){
+      $$("[data-show]",f).forEach(function(el){if(!el.classList.contains("step"))el.hidden=!shows(el)});
+      $$("[data-if]",f).forEach(function(el){var p=el.getAttribute("data-if").split("=");el.hidden=p[1].split(",").indexOf(val(p[0]))<0});
+      var a=$(".in-alert",f);if(a)a.hidden=!f.querySelector("[data-alert]:checked");
+    }
+    function render(scroll){
+      var act=active();cur=Math.min(cur,act.length-1);
+      steps.forEach(function(s){s.classList.toggle("on",s===act[cur])});
+      $("#inN").textContent=cur+1;$("#inT").textContent=act.length;
+      $("#inBar").style.width=((cur+1)/act.length*100)+"%";
+      $("#inBack").hidden=cur===0;
+      var last=cur===act.length-1;$("#inNext").hidden=last;$("#inSend").hidden=!last;
+      err.hidden=true;conds();
+      if(scroll){var r=f.getBoundingClientRect();if(r.top<0||r.top>innerHeight*.4)(window.__nlLenis?window.__nlLenis.scrollTo(f,{offset:-24}):f.scrollIntoView({behavior:"smooth"}))}
+      if(window.ScrollTrigger)ScrollTrigger.refresh();
+    }
+    function ok(step){
+      var bad=null;
+      $$("input[required]",step).forEach(function(i){
+        if(bad||i.closest("[hidden]"))return;
+        if(i.type==="radio"){if(!f.querySelector('input[name="'+i.name+'"]:checked'))bad=i}
+        else if(i.type==="checkbox"){if(!i.checked)bad=i}
+        else if(!i.value.trim()||!i.checkValidity())bad=i;
+      });
+      err.hidden=!bad;if(bad){(bad.type==="radio"||bad.type==="checkbox"?bad.closest(".opt,.consent"):bad).scrollIntoView({block:"center"});if(bad.focus)bad.focus({preventScroll:true})}
+      return !bad;
+    }
+    function next(){var act=active();if(!ok(act[cur]))return;if(cur<act.length-1){cur++;render(true);var first=act[cur].querySelector("input");}}
+    $("#inNext").addEventListener("click",next);
+    $("#inBack").addEventListener("click",function(){if(cur>0){cur--;render(true)}});
+    f.addEventListener("change",function(e){
+      conds();err.hidden=true;
+      var st=e.target.closest(".step");
+      if(st&&st.hasAttribute("data-auto")&&e.target.type==="radio")setTimeout(next,260);
+      if(e.target.name==="request_for")render(false);
+    });
+    f.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.type!=="submit"){e.preventDefault();var act=active();cur<act.length-1?next():f.requestSubmit()}});
+    f.addEventListener("submit",function(e){if(!ok(active()[cur]))e.preventDefault()});
+    render(false);
+  })();
+
+  /* ---------- Sin movimiento: todo visible y listo ---------- */
+  if(RM||!window.gsap||!window.ScrollTrigger||!window.SplitText){
+    root.classList.remove("anim");window.__nlReady=true;return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger,SplitText);
+
+  /* Lenis igual que terrot: lerp 0.1, wheelMultiplier 1 */
+  var lenis=null;
+  if(window.Lenis){
+    lenis=new Lenis({lerp:.1,wheelMultiplier:1,infinite:false});window.__nlLenis=lenis;
+    lenis.on("scroll",ScrollTrigger.update);
+    gsap.ticker.add(function(t){lenis.raf(t*1000)});
+    gsap.ticker.lagSmoothing(0);
+    $$('a[href^="#"]').forEach(function(a){a.addEventListener("click",function(e){
+      var id=a.getAttribute("href");if(id.length<2)return;var t=$(id);if(!t)return;
+      e.preventDefault();lenis.scrollTo(t,{offset:-70});
+    })});
+  }
+
+  function show(el){gsap.set(el,{visibility:"visible"})}
+
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){
+
+    /* ===== LOAD ===== */
+    /* loadanimationopacity: opacity 0->1, y 8px->0, .7 s, pos .2, stagger .08, power3.out */
+    $$('[data-a="load-opacity"]').forEach(function(el){show(el);
+      gsap.fromTo(el,{opacity:0,y:8},{opacity:1,y:0,duration:.7,delay:.2,ease:"power3.out"})});
+    /* lettersappearonlyfirst: chars con máscara, from opacity 0, 1 s, pos .13, stagger .05, power2.out */
+    $$('[data-a="chars-load"]').forEach(function(el){show(el);
+      SplitText.create(el,{type:"chars",mask:"chars",autoSplit:true,onSplit:function(s){
+        return gsap.from(s.chars,{opacity:0,duration:1,delay:.13,stagger:.05,ease:"power2.out"})}})});
+    /* heroimagecontainer: opacity 0->1, y 10%->0, .4 s, pos .8, power3.out */
+    $$('[data-a="hero-image"]').forEach(function(el){show(el);
+      gsap.fromTo(el,{opacity:0,yPercent:10},{opacity:1,yPercent:0,duration:.4,delay:.8,ease:"power3.out"})});
+    $$('[data-a="fade"]').forEach(function(el){show(el);
+      gsap.fromTo(el,{opacity:0},{opacity:1,duration:1,delay:.13,ease:"power2.out"})});
+
+    /* cinta de tarjetas del hero: x -25% -> -75%, 45 s, power2.out, repeat -1 */
+    gsap.fromTo("#heroTrack",{xPercent:-25},{xPercent:-75,duration:45,ease:"power2.out",repeat:-1});
+
+    /* ===== SCROLL ===== */
+    /* lettersappearonscroll: chars + máscara, opacity 0->1, rotationY 35->0, 1 s, pos .3, stagger .05, ease none; top bottom */
+    $$('[data-a="chars-scroll"]').forEach(function(el){show(el);
+      SplitText.create(el,{type:"chars",mask:"chars",autoSplit:true,onSplit:function(s){
+        return gsap.fromTo(s.chars,{opacity:0,rotationY:35},{opacity:1,rotationY:0,duration:1,delay:.3,stagger:.05,ease:"none",
+          scrollTrigger:{trigger:el,start:"top bottom",toggleActions:"play none none none"}})}})});
+    /* linesanimation: lines + máscara, yPercent 100->0, .8 s, pos .1, stagger .057, power3.out; 80% bottom */
+    $$('[data-a="lines"]').forEach(function(el){show(el);
+      SplitText.create(el,{type:"lines",mask:"lines",autoSplit:true,onSplit:function(s){
+        return gsap.fromTo(s.lines,{yPercent:100},{yPercent:0,duration:.8,delay:.1,stagger:.057,ease:"power3.out",
+          scrollTrigger:{trigger:el,start:"80% bottom",toggleActions:"play none none none"}})}})});
+    /* opacityanimatononscroll: opacity 0->1, y 12px->0, .7 s, pos .29, power3.out; top bottom */
+    $$('[data-a="opacity"]').forEach(function(el){show(el);
+      gsap.fromTo(el,{opacity:0,y:12},{opacity:1,y:0,duration:.7,delay:.29,ease:"power3.out",
+        scrollTrigger:{trigger:el,start:"top bottom",toggleActions:"play none none none"}})});
+
+    /* "NEWLIFE •" gigante: cada fila x 150% -> 0, 16 s lineal, infinito; el bloque escala 1.15 -> .85 con el scroll */
+    gsap.utils.toArray(".heromarquee").forEach(function(m){
+      gsap.fromTo(m,{xPercent:150},{xPercent:0,duration:16,ease:"none",repeat:-1})});
+    gsap.fromTo(".hero-big-text",{scale:1.15},{scale:.85,ease:"power2.out",
+      scrollTrigger:{trigger:document.body,start:"top top",end:"top+=100% bottom",scrub:.8}});
+
+    /* tarjetas de situaciones: scale .9 -> 1 con scrub .8 */
+    gsap.utils.toArray(".projectlink").forEach(function(p){
+      gsap.fromTo(p,{scale:.9},{scale:1,ease:"power2.out",scrollTrigger:{trigger:p,start:"top bottom",end:"bottom top",scrub:.8}});
+      var hd=$(".hoverdiv",p);
+      p.addEventListener("mouseenter",function(){gsap.fromTo(hd,{opacity:0},{opacity:1,duration:.5,ease:"power1.in"})});
+      p.addEventListener("mouseleave",function(){gsap.to(hd,{opacity:0,duration:.5})});
+      p.addEventListener("focus",function(){gsap.to(hd,{opacity:1,duration:.3})});
+      p.addEventListener("blur",function(){gsap.to(hd,{opacity:0,duration:.3})});
+    });
+
+    /* pasos: x desde -50% / 15% / -10% -> 0 con opacity, scrub .8, power2.out */
+    $$('[data-a="svc"]').forEach(function(el){show(el);
+      gsap.fromTo(el,{xPercent:parseFloat(el.getAttribute("data-x")),opacity:0},{xPercent:0,opacity:1,ease:"power2.out",
+        scrollTrigger:{trigger:el,start:el.getAttribute("data-start"),end:"bottom top",scrub:.8}})});
+
+    /* imagen grande: scale 1.6 -> 1, 1.2 s, pos .2, power2.out, una vez al entrar */
+    gsap.fromTo(".imageparallax1",{scale:1.6},{scale:1,duration:1.2,delay:.2,ease:"power2.out",
+      scrollTrigger:{trigger:".animationsimages",start:"top bottom",toggleActions:"play none none none"}});
+
+    /* carrusel: tarjeta de cobertura y -60 -> 0, slider y 60 -> 0, scrub .8, power1.out */
+    gsap.fromTo(".cardstats",{y:-60},{y:0,ease:"power1.out",scrollTrigger:{trigger:"#svcMain",start:"top bottom",end:"bottom top",scrub:.8}});
+    gsap.fromTo("#svcSlider",{y:60},{y:0,ease:"power1.out",scrollTrigger:{trigger:"#svcMain",start:"top bottom",end:"bottom top",scrub:.8}});
+
+    /* dos tarjetas: primera y 50 -> 0, segunda y 300 -> 0 (pos .4), ease none, scrub .8, top bottom -> top center */
+    var ptl=gsap.timeline({scrollTrigger:{trigger:"#pricingWrap",start:"top bottom",end:"top center",scrub:.8}});
+    ptl.fromTo(".pricing-first-card",{y:50},{y:0,duration:.4,ease:"none"},0)
+       .fromTo(".pricing-second-card",{y:300},{y:0,duration:.4,ease:"none"},.4);
+
+    root.classList.remove("anim");window.__nlReady=true;
+    window.addEventListener("load",function(){ScrollTrigger.refresh()});
+  });
+})();
+</script>
+
+<!-- VERSIÓN DE PRUEBA: el cuestionario no envía datos hasta tener un servicio con BAA (HIPAA) -->
+<script>
+(function(){
+  var f=document.getElementById("intake");if(!f)return;
+  f.addEventListener("submit",function(e){
+    if(e.defaultPrevented)return;           /* faltaba algo: la validación ya lo detuvo */
+    e.preventDefault();
+    var es=document.documentElement.lang==="es";
+    f.innerHTML='<div class="in-done"><h3>'+(es?"Gracias":"Thank you")+'</h3><p>'+
+      (es?"Esta es una versión de prueba de la página: el formulario todavía no envía su información. Nada de lo que escribió se guardó.":
+          "This is a test version of the website: the form doesn’t send your information yet. Nothing you entered was saved.")+'</p></div>';
+  });
+})();
+</script>
+</body>
+</html>
