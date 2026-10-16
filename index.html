@@ -141,6 +141,9 @@ html[data-lang="en"] .nav-lang .nl-en,html[data-lang="es"] .nav-lang .nl-es{opac
 .svc-card .textcategory{margin-top:6px;letter-spacing:.14em;transition:transform .3s cubic-bezier(.16,1,.3,1)}
 .svc-card:hover .textcategory{transform:translateX(6px)}
 .svc-card:focus-visible{outline:3px solid var(--coral);outline-offset:4px}
+/* servicios de ejemplo que el cliente todavía no confirma (16-oct) */
+.svc-pend{position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:3;background:var(--pending);color:var(--ink);font:600 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:999px;white-space:nowrap}
+.svc-body .titlelabel .pending{margin-left:8px;font-size:10px}
 
 /* ===== FICHA DE SERVICIO ===== */
 .svc-sheet{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
@@ -615,6 +618,36 @@ main{position:relative;z-index:1;background:var(--bg)}
             <span class="maskimageproject"></span>
             <span class="floatinglabelnameproject"><span class="projectname"><span lang="en">Wound tracking</span><span lang="es">Seguimiento de la herida</span></span><span class="textcategory"><span lang="en">See more →</span><span lang="es">Ver más →</span></span></span>
           </button>
+          <button class="projectcardinfo svc-card" type="button" data-svc="vascular">
+            <img src="img/H1-hero.jpg" alt="" loading="lazy">
+            <span class="maskimageproject"></span>
+            <span class="svc-pend"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span>
+            <span class="floatinglabelnameproject"><span class="projectname"><span lang="en">Vascular ultrasound screening</span><span lang="es">Estudio de circulación con ultrasonido</span></span><span class="textcategory"><span lang="en">See more →</span><span lang="es">Ver más →</span></span></span>
+          </button>
+          <button class="projectcardinfo svc-card" type="button" data-svc="xray">
+            <img src="img/I4-plan.jpg" alt="" loading="lazy">
+            <span class="maskimageproject"></span>
+            <span class="svc-pend"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span>
+            <span class="floatinglabelnameproject"><span class="projectname"><span lang="en">Mobile X-rays</span><span lang="es">Rayos X a domicilio</span></span><span class="textcategory"><span lang="en">See more →</span><span lang="es">Ver más →</span></span></span>
+          </button>
+          <button class="projectcardinfo svc-card" type="button" data-svc="mist">
+            <img src="img/I5-manos.jpg" alt="" loading="lazy">
+            <span class="maskimageproject"></span>
+            <span class="svc-pend"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span>
+            <span class="floatinglabelnameproject"><span class="projectname"><span lang="en">MIST ultrasound therapy</span><span lang="es">Terapia de ultrasonido MIST</span></span><span class="textcategory"><span lang="en">See more →</span><span lang="es">Ver más →</span></span></span>
+          </button>
+          <button class="projectcardinfo svc-card" type="button" data-svc="skin">
+            <img src="img/I2-llegada.jpg" alt="" loading="lazy">
+            <span class="maskimageproject"></span>
+            <span class="svc-pend"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span>
+            <span class="floatinglabelnameproject"><span class="projectname"><span lang="en">Skin substitutes</span><span lang="es">Sustitutos de piel</span></span><span class="textcategory"><span lang="en">See more →</span><span lang="es">Ver más →</span></span></span>
+          </button>
+          <button class="projectcardinfo svc-card" type="button" data-svc="supplies">
+            <img src="img/I3-insumos.jpg" alt="" loading="lazy">
+            <span class="maskimageproject"></span>
+            <span class="svc-pend"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span>
+            <span class="floatinglabelnameproject"><span class="projectname"><span lang="en">Wound care supplies</span><span lang="es">Insumos para la herida</span></span><span class="textcategory"><span lang="en">See more →</span><span lang="es">Ver más →</span></span></span>
+          </button>
         </div>
         <!-- las otras 3 copias de la lista las clona el script (como las 4 listas de terrot) -->
       </div>
@@ -702,6 +735,86 @@ main{position:relative;z-index:1;background:var(--bg)}
         <ul class="svc-ul"><li><span lang="en">Measurements and photos at every visit.</span><span lang="es">Medidas y fotos en cada visita.</span></li><li><span lang="en">The photos are kept private and are used only for the patient’s care.</span><span lang="es">Las fotos se guardan en privado y se usan solo para la atención del paciente.</span></li><li><span lang="en">The doctor gets a report every time the plan changes.</span><span lang="es">El médico recibe un reporte cada vez que cambia el plan.</span></li></ul>
         <h4 class="svc-h"><span lang="en">Who it’s for</span><span lang="es">Para quién es</span></h4>
         <ul class="svc-ul"><li><span lang="en">Any wound that needs more than one visit</span><span lang="es">Toda herida que necesita más de una visita</span></li><li><span lang="en">Doctors and case managers who want to follow the progress</span><span lang="es">Médicos y case managers que quieren seguir el avance</span></li></ul>
+        <div class="svc-cta">
+          <a class="btn" href="#contact" data-close><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
+          <a class="btn svc-ghost" href="tel:"><span lang="en">Call us</span><span lang="es">Llámenos</span></a>
+        </div>
+      </div>
+    </article>
+    <article class="svc-doc" data-svc="vascular" hidden>
+      <div class="svc-media"><img src="img/H1-hero.jpg" alt="" loading="lazy"></div>
+      <div class="svc-body">
+        <p class="titlelabel"><span lang="en">Service</span><span lang="es">Servicio</span> <span class="pending"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span></p>
+        <h3 class="svc-t"><span lang="en">Vascular ultrasound screening</span><span lang="es">Estudio de circulación con ultrasonido</span></h3>
+        <p class="svc-p"><span lang="en">Poor circulation can keep a wound from closing. With a portable Doppler ultrasound and an ankle-brachial index (ABI) test, we can check blood flow in the legs at home and share the results with the patient’s doctor.</span><span lang="es">La mala circulación puede hacer que una herida no cierre. Con un ultrasonido Doppler portátil y la prueba del índice tobillo-brazo (ABI), revisamos el flujo de sangre en las piernas en casa y le compartimos los resultados al médico del paciente.</span></p>
+        <h4 class="svc-h"><span lang="en">What happens</span><span lang="es">Qué pasa</span></h4>
+        <ul class="svc-ul"><li><span lang="en">The test is done at home with portable equipment.</span><span lang="es">La prueba se hace en casa con equipo portátil.</span></li><li><span lang="en">It doesn’t use needles.</span><span lang="es">No usa agujas.</span></li><li><span lang="en">The results go to the patient’s doctor.</span><span lang="es">Los resultados llegan al médico del paciente.</span></li></ul>
+        <h4 class="svc-h"><span lang="en">Who it’s for</span><span lang="es">Para quién es</span></h4>
+        <ul class="svc-ul"><li><span lang="en">Leg or foot wounds that aren’t healing</span><span lang="es">Heridas en la pierna o el pie que no sanan</span></li><li><span lang="en">Patients with diabetes or poor circulation</span><span lang="es">Pacientes con diabetes o mala circulación</span></li></ul>
+        <div class="svc-cta">
+          <a class="btn" href="#contact" data-close><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
+          <a class="btn svc-ghost" href="tel:"><span lang="en">Call us</span><span lang="es">Llámenos</span></a>
+        </div>
+      </div>
+    </article>
+    <article class="svc-doc" data-svc="xray" hidden>
+      <div class="svc-media"><img src="img/I4-plan.jpg" alt="" loading="lazy"></div>
+      <div class="svc-body">
+        <p class="titlelabel"><span lang="en">Service</span><span lang="es">Servicio</span> <span class="pending"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span></p>
+        <h3 class="svc-t"><span lang="en">Mobile X-rays</span><span lang="es">Rayos X a domicilio</span></h3>
+        <p class="svc-p"><span lang="en">When the doctor needs to see what’s happening under a wound, an X-ray can be taken at home with portable equipment, by order of the patient’s doctor. A radiologist reads the images and the report goes to the doctor.</span><span lang="es">Cuando el médico necesita ver qué pasa debajo de una herida, se puede tomar una radiografía en casa con equipo portátil, por orden del médico del paciente. Un radiólogo revisa las imágenes y el reporte llega al médico.</span></p>
+        <h4 class="svc-h"><span lang="en">What happens</span><span lang="es">Qué pasa</span></h4>
+        <ul class="svc-ul"><li><span lang="en">Only with a doctor’s order.</span><span lang="es">Solo con orden del médico.</span></li><li><span lang="en">Taken at home, without going to the hospital.</span><span lang="es">Se toma en casa, sin ir al hospital.</span></li><li><span lang="en">The doctor gets the radiologist’s report.</span><span lang="es">El médico recibe el reporte del radiólogo.</span></li></ul>
+        <h4 class="svc-h"><span lang="en">Who it’s for</span><span lang="es">Para quién es</span></h4>
+        <ul class="svc-ul"><li><span lang="en">Patients who have a hard time leaving home</span><span lang="es">Pacientes a quienes se les complica salir de casa</span></li><li><span lang="en">Wounds where the doctor wants to check the bone</span><span lang="es">Heridas en las que el médico quiere revisar el hueso</span></li></ul>
+        <div class="svc-cta">
+          <a class="btn" href="#contact" data-close><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
+          <a class="btn svc-ghost" href="tel:"><span lang="en">Call us</span><span lang="es">Llámenos</span></a>
+        </div>
+      </div>
+    </article>
+    <article class="svc-doc" data-svc="mist" hidden>
+      <div class="svc-media"><img src="img/I5-manos.jpg" alt="" loading="lazy"></div>
+      <div class="svc-body">
+        <p class="titlelabel"><span lang="en">Service</span><span lang="es">Servicio</span> <span class="pending"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span></p>
+        <h3 class="svc-t"><span lang="en">MIST ultrasound therapy</span><span lang="es">Terapia de ultrasonido MIST</span></h3>
+        <p class="svc-p"><span lang="en">MIST therapy uses low-frequency ultrasound carried by a fine saline mist. It doesn’t touch the wound. It is used to clean the wound bed, as part of the care plan and with the doctor’s orders.</span><span lang="es">La terapia MIST usa ultrasonido de baja frecuencia que llega a la herida en una bruma fina de solución salina. No toca la herida. Se usa para limpiar el lecho de la herida, como parte del plan de cuidado y con las órdenes del médico.</span></p>
+        <h4 class="svc-h"><span lang="en">What happens</span><span lang="es">Qué pasa</span></h4>
+        <ul class="svc-ul"><li><span lang="en">Sessions are done during the home visit.</span><span lang="es">Las sesiones se hacen durante la visita a la casa.</span></li><li><span lang="en">Nothing touches the wound.</span><span lang="es">Nada toca la herida.</span></li><li><span lang="en">It is used together with the rest of the plan.</span><span lang="es">Se usa junto con el resto del plan.</span></li></ul>
+        <h4 class="svc-h"><span lang="en">Who it’s for</span><span lang="es">Para quién es</span></h4>
+        <ul class="svc-ul"><li><span lang="en">Chronic wounds that need cleaning</span><span lang="es">Heridas crónicas que necesitan limpieza</span></li><li><span lang="en">Wounds that are painful to touch</span><span lang="es">Heridas que duelen al tocarlas</span></li></ul>
+        <div class="svc-cta">
+          <a class="btn" href="#contact" data-close><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
+          <a class="btn svc-ghost" href="tel:"><span lang="en">Call us</span><span lang="es">Llámenos</span></a>
+        </div>
+      </div>
+    </article>
+    <article class="svc-doc" data-svc="skin" hidden>
+      <div class="svc-media"><img src="img/I2-llegada.jpg" alt="" loading="lazy"></div>
+      <div class="svc-body">
+        <p class="titlelabel"><span lang="en">Service</span><span lang="es">Servicio</span> <span class="pending"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span></p>
+        <h3 class="svc-t"><span lang="en">Skin substitutes</span><span lang="es">Sustitutos de piel</span></h3>
+        <p class="svc-p"><span lang="en">For some chronic wounds, a provider may apply a skin substitute: a thin layer made in a lab that covers the wound. It is used only when the patient’s doctor decides it is clinically appropriate.</span><span lang="es">En algunas heridas crónicas, un proveedor puede aplicar un sustituto de piel: una capa delgada hecha en laboratorio que cubre la herida. Se usa solo cuando el médico del paciente decide que es clínicamente apropiado.</span></p>
+        <h4 class="svc-h"><span lang="en">What happens</span><span lang="es">Qué pasa</span></h4>
+        <ul class="svc-ul"><li><span lang="en">A nurse practitioner or doctor applies it.</span><span lang="es">Lo aplica una enfermera practicante (NP) o un médico.</span></li><li><span lang="en">The doctor decides whether it is appropriate.</span><span lang="es">El médico decide si es apropiado.</span></li><li><span lang="en">The wound is checked at the follow-up visits.</span><span lang="es">La herida se revisa en las visitas de seguimiento.</span></li></ul>
+        <h4 class="svc-h"><span lang="en">Who it’s for</span><span lang="es">Para quién es</span></h4>
+        <ul class="svc-ul"><li><span lang="en">Chronic wounds that haven’t improved with standard care</span><span lang="es">Heridas crónicas que no han mejorado con el cuidado común</span></li></ul>
+        <div class="svc-cta">
+          <a class="btn" href="#contact" data-close><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
+          <a class="btn svc-ghost" href="tel:"><span lang="en">Call us</span><span lang="es">Llámenos</span></a>
+        </div>
+      </div>
+    </article>
+    <article class="svc-doc" data-svc="supplies" hidden>
+      <div class="svc-media"><img src="img/I3-insumos.jpg" alt="" loading="lazy"></div>
+      <div class="svc-body">
+        <p class="titlelabel"><span lang="en">Service</span><span lang="es">Servicio</span> <span class="pending"><span lang="en">To be confirmed</span><span lang="es">Por confirmar</span></span></p>
+        <h3 class="svc-t"><span lang="en">Wound care supplies</span><span lang="es">Insumos para la herida</span></h3>
+        <p class="svc-p"><span lang="en">We help make sure the dressings and supplies in the care plan get to the patient’s home, so the family isn’t running to the pharmacy.</span><span lang="es">Le ayudamos a que los apósitos e insumos del plan de cuidado lleguen a la casa del paciente, para que la familia no ande corriendo a la farmacia.</span></p>
+        <h4 class="svc-h"><span lang="en">What happens</span><span lang="es">Qué pasa</span></h4>
+        <ul class="svc-ul"><li><span lang="en">The supplies match the care plan.</span><span lang="es">Los insumos son los del plan de cuidado.</span></li><li><span lang="en">They are delivered to the home.</span><span lang="es">Se entregan en la casa.</span></li><li><span lang="en">The nurse shows how to use them.</span><span lang="es">La enfermera enseña cómo usarlos.</span></li></ul>
+        <h4 class="svc-h"><span lang="en">Who it’s for</span><span lang="es">Para quién es</span></h4>
+        <ul class="svc-ul"><li><span lang="en">Families caring for someone at home</span><span lang="es">Familias que cuidan a alguien en casa</span></li></ul>
         <div class="svc-cta">
           <a class="btn" href="#contact" data-close><span lang="en">Request a visit</span><span lang="es">Pedir una visita</span></a>
           <a class="btn svc-ghost" href="tel:"><span lang="en">Call us</span><span lang="es">Llámenos</span></a>
