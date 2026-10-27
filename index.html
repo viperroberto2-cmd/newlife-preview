@@ -86,7 +86,9 @@ html.anim [data-a]{visibility:hidden}
 .nav{position:absolute;inset:0 0 auto 0;z-index:100;padding:16px var(--side);display:flex;align-items:center;justify-content:space-between;gap:16px;pointer-events:none}
 .nav>*{pointer-events:auto}
 .nav-logo{display:flex;align-items:center;min-height:44px}
-.nav-logo img{width:clamp(130px,11vw,170px);height:auto}
+.nav-logo img{width:clamp(150px,13vw,200px);height:auto}
+/* 27-oct: logo corazón (azul marino y turquesa) en pastilla blanca para que se lea sobre el video */
+.logo-pill{display:inline-flex;align-items:center;background:#fff;border-radius:999px;padding:8px 18px;box-shadow:0 6px 18px rgba(14,31,51,.18)}
 .nav-right{display:flex;align-items:center;gap:10px}
 .nav-call{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:110px;background:var(--coral);color:var(--ink);font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:background .2s}
 .nav-call:hover{background:#F39A74}
@@ -433,7 +435,7 @@ main{position:relative;z-index:1;background:var(--bg)}
 .footerwrapper{width:90vw;max-width:1280px;margin:0 auto}
 .footertop{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-top:32px;border-top:1px solid var(--line)}
 .footerleft{display:flex;flex-direction:column;gap:32px}
-.footerlogo img{width:200px;height:auto}
+.footerlogo img{width:240px;height:auto}
 .footernav{display:flex;flex-direction:column;gap:2px}
 .footerlinks,.footersociallinks{display:inline-flex;align-items:center;min-height:36px;font:500 14px/1.6 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--ink);text-decoration:none}
 .footerlinks:hover,.footersociallinks:hover{color:var(--coral-deep)}
@@ -539,7 +541,7 @@ main{position:relative;z-index:1;background:var(--bg)}
 
 <!-- NAV -->
 <header class="nav">
-  <a class="nav-logo" href="#home" data-a="fade"><img src="img/newlife-horizontal-cream.svg" width="1943" height="710" alt="NewLife Wound Care"></a>
+  <a class="nav-logo" href="#home" data-a="fade"><span class="logo-pill"><img src="img/newlife-corazon-horizontal.png" width="1764" height="443" alt="New Life Wound Care"></span></a>
   <div class="nav-right">
     <!-- idioma siempre visible (antes solo estaba dentro del menú y en el footer) -->
     <button class="nav-lang" type="button" data-lang-toggle aria-label="Switch to Spanish (Español)" data-label-en="Switch to Spanish (Español)" data-label-es="Cambiar a inglés (English)"><b class="nl-en">EN</b><i>|</i><b class="nl-es">ES</b></button>
@@ -1431,7 +1433,7 @@ main{position:relative;z-index:1;background:var(--bg)}
   <div class="footerwrapper">
     <div class="footertop">
       <div class="footerleft">
-        <a class="footerlogo" href="#home" data-a="opacity"><img src="img/newlife-horizontal.svg" width="1943" height="710" alt="NewLife Wound Care" loading="lazy"></a>
+        <a class="footerlogo" href="#home" data-a="opacity"><img src="img/newlife-corazon-horizontal.png" width="1764" height="443" alt="New Life Wound Care" loading="lazy"></a>
         <nav class="footernav" aria-label="Site links" data-label-en="Site links" data-label-es="Enlaces del sitio">
           <a class="footerlinks" href="#home"><span lang="en">Home</span><span lang="es">Inicio</span></a>
           <a class="footerlinks" href="#about"><span lang="en">About</span><span lang="es">Nosotros</span></a>
